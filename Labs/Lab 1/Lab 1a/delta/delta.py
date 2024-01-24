@@ -85,4 +85,3 @@ slider = Slider(ax_slider, label='iteration', valmin=1, valmax=iterations, valin
 slider.on_changed(update_slider)
 
 plt.show()
-
