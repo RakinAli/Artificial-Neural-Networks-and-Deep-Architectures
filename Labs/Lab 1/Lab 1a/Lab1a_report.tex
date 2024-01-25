@@ -5,6 +5,8 @@
 \usepackage{amssymb}
 \usepackage{framed}
 \usepackage{graphicx}
+\usepackage{subcaption}
+
 
 
 \setlength{\parindent}{0pt}
@@ -35,33 +37,36 @@ Our major goals in the assignment were
 
 This assignment was scoped on the delta and perceptron learning rule. For the delta rule we used batch learning and sequential learning and for the delta rule we only used sequential learning. The limitations were the different learning rate
 
-\section{Methods} This lab was conducted three separate times as we did not collaborate when writing the code. We all did the code separately then compared our results. The code was written in Jupyter notebook and regular python v3.9 file. We all drew the same conclusions on our results however got different graphs. Numpy function and matplot were the only libraries used.  \\
+\section{Methods} This lab was conducted three separate times as we did not collaborate when writing the code. We all did the code separately then compared our results. The code was written in Jupyter notebook and regular python v3.9 file. We all drew more or less the same conclusions based on our results however got different graphs. Numpy function and matplot were the only libraries used.  \\
 
 \section{Results and discussion}
 \subsection{Classification with a single-layer perceptron}
+In this Section we compared learning algorithm with a single perception. The algorithms compared were delta rule and perception learning. From the lectures we learned that perceptron learning converges to the "first best solution" it finds however that result does not generalise well compared to delta rule. This is evident in figure \ref{fig:Decision Boundary} as the boundary line generalizes better. Regarding convergence, delta rule converges faster 
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/Delta-linear-seperable.png}
+        \caption{Delta rule}
+        \label{fig:Delta Rule}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron-linearly-seperable.png}
+        \caption{Perceptron rule}
+        \label{fig:Perceptron}
+    \end{subfigure}
+    \caption{Decision Boundary for Delta rule and Perceptron Rule}
+    \label{fig:Decision Boundary}
+\end{figure}\\
+we also removed the bias to check how well delta rule converges. Belo
 
-\begin{figure}
-    \centering
-    \includegraphics{}
-    \caption{Caption}
-    \label{fig:enter-label}
-\end{figure}
-\begin{figure}
-    \centering
-    \includegraphics{Labs/Lab 1/Lab 1a/Results/Delta-linear-seperable.png}
-    \caption{Delta rule}
-    \label{fig:Delta Rule}
-\end{figure}
+
+
 
 \subsection{Classification of data that are not linearly separable\textit{(ca.1.5-2 pages)}}
 Let's first try to do regular classification. Here the bias is 
 
-\begin{figure}
-    \centering
-    \includegraphics{Labs/Lab 1/Lab 1a/Results/perceptron-linearly-seperable.png}
-    \caption{Perceptron}
-    \label{fig:Perceptron-withBias}
-\end{figure}
+
 
 \section{Final remarks \normalsize{\textit{(ca. 0.5 page)}}} \textbf{Rakin Ali }
 \textit{Please share your final reflections on the lab, its content and your own learning. Which parts of the lab assignment did you find confusing or not necessarily helping in understanding important concepts and which parts you have found interesting and relevant to your learning experience? \\
