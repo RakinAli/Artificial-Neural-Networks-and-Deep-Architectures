@@ -109,7 +109,7 @@ We used a single layer Perceptron, trained using the Delta learning rule to clas
     \centering
     \begin{subfigure}{0.4\textwidth}
         \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/decicion-boundary-not-separable.png}
-        \caption{Decision boundary on data set that is not linearly separable}
+        \caption{Decision boundary on data set that is not linearly separable with Delta rule}
         \label{fig:Decision-boundary-not-linearly-separable}
     \end{subfigure}
     \hfill
@@ -120,25 +120,30 @@ We used a single layer Perceptron, trained using the Delta learning rule to clas
     \end{subfigure}
 \end{figure}
 
+
+
 \begin{figure}[htb]
     \centering
     \begin{subfigure}{0.4\textwidth}
-        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results}
-        \caption{Decision boundary on data set that is not linearly separable}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron_learning_nonLinear_with_bias.png}
+        \caption{Decision boundary on data set that is not linearly separable  using perceptron learning rule}
         \label{fig:Decision-boundary-not-linearly-separable}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.4\textwidth}
-        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/Delta-linear-seperable-NO-BIAS-ITERATION100.png}
-        \caption{Delta rule with 100 iterations}
-        \label{fig:Perceptron}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron_learning_nonLinear.png}
+        \caption{Decision boundary on the data set that is not linearly separable with bias using perceptron learning rule}
+        \label{fig:Error-convergance}
     \end{subfigure}
-    \caption{Decision Boundary for Delta rule without bias }
-    \label{fig:DeltaRule-NoBias}
 \end{figure}
+
+
+
 
 
 \section{Final remarks \normalsize{\textit{(ca. 0.5 page)}}} \textbf{Rakin Ali }
 \textit{Please share your final reflections on the lab, its content and your own learning. Which parts of the lab assignment did you find confusing or not necessarily helping in understanding important concepts and which parts you have found interesting and relevant to your learning experience? \\
 Here you can also formulate your opinion, interpretation or speculation about some of the simulation outcomes. Please add any follow-up questions that you might have regarding the lab tasks and the results you have produced.}
+
+Overall, the lab was interesting as it helped us implement the theoretical concepts we learned from the lectures and see a practical example of how the classification task could be conducted using the perceptron implementation. It was also beneficial for our learning to use different approaches, the perceptron learning rule, and the delta rule, to classify the data and see which algorithm converges faster. One question could be asked if it is sufficient to use only one perceptron to classify binary data in real live implementation. Or the use of only perception is just for learning purposes and not used in practical examples. 
 \end{document}
