@@ -19,7 +19,7 @@
   {\huge Short report on lab assignment 1\\[1ex]}
   {\Large Classification with a single-layer perceptron}\\
   \vspace{8mm}  
-  {\Large Hasan, Rakin Ali and Steinar Logi \\}
+  {\Large Hasan Alzubeidi, Rakin Ali and Steinar Logi \\}
   \vspace{4mm}
   {\large January 22, 2024 \\}
 \end{center}
@@ -96,7 +96,7 @@ The decision boundary passes through origo regardless if it is not the optimal s
 \end{figure}
 
 
-\subsection{Classification of data that are not linearly separable\textit{(ca.1.5-2 pages)}}
+\subsection{Classification of data that are not linearly separable}
 We created a dataset that is not linearly separable by using the same method as in the assignments above, moving the means of the two clusters closer together. That way the clusters overlap, and no longer are linearly separable. A picture of this new set of data points can be seen below.
 \begin{figure}[htb]
     \centering
@@ -108,17 +108,26 @@ First we tried fitting the single layer Perceptron using the Percepton learning 
 
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=0.8\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron-training-error-convergence.png}
-    \caption{Training error when using Perceptron on data set that is not linearly separable}
-    \label{fig:Perceptron-training-error}
+    \begin{subfigure}{0.4\textwidth}
+         \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron-training-error-convergence.png}
+        \caption{Training error when using Perceptron}
+        \label{fig:Perceptron-training-error}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron-decision-boundary-not-separable.png}
+        \caption{Decision boundary obtained with perceptron learning}
+        \label{fig:decision-boundary}
+    \end{subfigure}
 \end{figure}
 
 The training error never reaches a point where it is stable. This makes sense since there will always be a point that is misclassified. When the training algorithm reaches that point it moves the boundary in a such a way that it will be on the correct side of the boundary. That will make another point misclassified and therefore this boundary will always keep on moving to make the current point correctly classified. An illustration of this can be seen below.
 
+An illustration of how the decision boundary differs and is not stable can be seen in the two figures. They show how the decision line changes even after ten thousand iterations. In the first picture, we see a line, and after 10000 iterations, and in the second figure, we see another line that is different from the first one. It confirms the theory that the perceptron rule does not converge.   
+
 We used a single layer Perceptron, trained using the Delta learning rule to classify this. We expected the learning algorithm to converge like it should, when using appropriate learning rate. As it turned out the algorithm did converge and we obtained the decision boundary shown in the picture below. The other picture shows how the training error developed through the training. It decreases fast in the beginning until it reaches convergence.
 
-
-The second approach to finding a solution is to use the perceptron learning rule.  
+ 
 \begin{figure}[htb]
     \centering
     \begin{subfigure}{0.4\textwidth}
@@ -139,7 +148,7 @@ The second approach to finding a solution is to use the perceptron learning rule
 \begin{figure}[htb]
     \centering
     \begin{subfigure}{0.4\textwidth}
-        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/p_non_linear500.png}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/p_non_linear10000.png}
         \caption{Decision boundary on data set that is not linearly separable  using perceptron learning rule after 10000 iterations}
         \label{fig:Decision-boundary-not-linearly-separable}
     \end{subfigure}
@@ -149,7 +158,7 @@ The second approach to finding a solution is to use the perceptron learning rule
 \begin{figure}[htb]
     \centering
     \begin{subfigure}{0.4\textwidth}
-        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/p_non_linear1000.png}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/p_non_linear11000.png}
         \caption{Decision boundary on data set that is not linearly separable  using perceptron learning rule after 11000}
         \label{fig:Decision-boundary-not-linearly-separable}
     \end{subfigure}
@@ -162,9 +171,6 @@ The second approach to finding a solution is to use the perceptron learning rule
 
 
 
-\section{Final remarks \normalsize{\textit{(ca. 0.5 page)}}} \textbf{Rakin Ali }
-\textit{Please share your final reflections on the lab, its content and your own learning. Which parts of the lab assignment did you find confusing or not necessarily helping in understanding important concepts and which parts you have found interesting and relevant to your learning experience? \\
-Here you can also formulate your opinion, interpretation or speculation about some of the simulation outcomes. Please add any follow-up questions that you might have regarding the lab tasks and the results you have produced.}
-
+\section{Final remarks \normalsize{\textit{(ca. 0.5 page)}}} 
 Overall, the lab was interesting as it helped us implement the theoretical concepts we learned from the lectures and see a practical example of how the classification task could be conducted using the perceptron implementation. It was also beneficial for our learning to use different approaches, the perceptron learning rule, and the delta rule, to classify the data and see which algorithm converges faster. One question could be asked if it is sufficient to use only one perceptron to classify binary data in real live implementation. Or the use of only perception is just for learning purposes and not used in practical examples. 
 \end{document}
