@@ -74,8 +74,9 @@ W = np.random.normal(size=(dataset.shape[0], 1))
 
 # Training
 iterations = 100 if batch_learning else 100 * dataset.shape[1]
-lr = 0.001
+lr = 0.0005
 iterations_values = []
+error_values = []
 for i in range(iterations):
     if batch_learning:
         batch = dataset#[:, 0:10]
@@ -84,16 +85,20 @@ for i in range(iterations):
         batch = np.array([dataset[:, i % dataset.shape[1]]]).T
         batch_targets = np.array([targets[:, i % dataset.shape[1]]]).T
 
-    error =  W.T @ batch - batch_targets
+    e =  W.T @ batch - batch_targets
 
-    delta_w = -error @ batch.T
+    delta_w = -e @ batch.T
 
     W = W + lr * delta_w.T
+
+    errors = (W.T @ batch - batch_targets) ** 2 
+
     iterations_values.append(W)
+    error_values.append(np.sum(errors))
 
 
 fig, ax = plt.subplots()
-plt.subplots_adjust(bottom=0.2)
+#plt.subplots_adjust(bottom=0.2)
 
 x = np.linspace(-100, 100, 100)
 y = W[0]/W[1] * x
@@ -118,8 +123,11 @@ ax.scatter(classB[0], classB[1], color='green')
 ax.set_ylim(np.min(dataset[1,:]) - 0.5, np.max(dataset[1, :])+ 0.5)
 ax.set_xlim(np.min(dataset[0,:]) - 0.5, np.max(dataset[0, :])+ 0.5)
 
-ax_slider = plt.axes([0.25, 0.1, 0.5, 0.03])
-slider = Slider(ax_slider, label='iteration', valmin=1, valmax=iterations, valinit=iterations, valfmt='%0.0f')
-slider.on_changed(update_slider)
+#ax_slider = plt.axes([0.25, 0.1, 0.5, 0.03])
+#slider = Slider(ax_slider, label='iteration', valmin=1, valmax=iterations, valinit=iterations, valfmt='%0.0f')
+#slider.on_changed(update_slider)
 
+plt.show()
+
+plt.scatter(list(range(iterations)), error_values)
 plt.show()
