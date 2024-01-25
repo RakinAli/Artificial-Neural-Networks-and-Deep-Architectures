@@ -34,7 +34,7 @@ Our major goals in the assignment were
 \item Explore how the bias affects the convergence of the delta learning algorithm
 \end{itemize}
 
-This assignment was scoped on the delta and perceptron learning rule.\textbf{ For the delta rule we used batch learning and sequential learning and for the delta rule we only used sequential learning.} The limitations were the different learning rate
+This assignment was scoped on the delta and perceptron learning rule.\textbf{ For the delta rule we used batch learning and sequential learning; for perceptron learning rule, we only used sequential learning.} The limitations were the different learning rate
 
 \section{Methods} This lab was conducted three separate times as we did not collaborate when writing the code. We all did the code separately then compared our results. The code was written in Jupyter notebook and regular python v3.9 file. We all drew more or less the same conclusions based on our results however got different graphs. Numpy function and matplot were the only libraries used.  \\
 
@@ -76,7 +76,24 @@ This assignment was scoped on the delta and perceptron learning rule.\textbf{ Fo
 \end{figure}
 The decision boundary passes through origo regardless if it is not the optimal solution. The slope changes to become as optimal as possible. The bias simply changes the "starting" position of the slope which makes it easier to find the optimal decision boundary. 
 
-\textbf{Batch versus sequential learning:} Lastly we compared sequential versus batch learning. They converge to the same result however batch makes the changes faster
+\newpage
+\textbf{Batch versus sequential learning:} Lastly we compared sequential versus batch learning. They converge to the same result however batch makes the changes faster after each iteration
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/delta-linear-seperable-bias-sequential.png}
+        \caption{Delta rule with 8 iterations}
+        \label{fig:Delta Rule without bias, iteration 8}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/delta-linear-seperable-bias-BATCH.png}
+        \caption{Delta rule with 100 iterations}
+        \label{fig:DeltaRule-Batch}
+    \end{subfigure}
+    \caption{Mean square error comparison of batch learning and sequential learning}
+    \label{fig:DeltaRule-NoBias}
+\end{figure}
 
 
 \subsection{Classification of data that are not linearly separable\textit{(ca.1.5-2 pages)}}
