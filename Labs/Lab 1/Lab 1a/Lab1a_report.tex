@@ -104,7 +104,16 @@ We created a dataset that is not linearly separable by using the same method as 
     \caption{Data set that is not linearly separable}
     \label{fig:enter-label}
 \end{figure}
-First we tried fitting the single layer Perceptron using the Percep
+First we tried fitting the single layer Perceptron using the Percepton learning algorithm. We expected that this would not work since it is only guaranteed that it converges if the dataset is linearly separable. Our simulations confirmed this. We tried fitting this Perceptron using the Perceptron learning rule. We calculated the mean square error in the same way as is done when using the Delta learning to get a glimpse into the error of the model. The model does not converge as can be seen in the picture below.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron-training-error-convergence.png}
+    \caption{Training error when using Perceptron on data set that is not linearly separable}
+    \label{fig:Perceptron-training-error}
+\end{figure}
+
+The training error never reaches a point where it is stable. This makes sense since there will always be a point that is misclassified. When the training algorithm reaches that point it moves the boundary in a such a way that it will be on the correct side of the boundary. That will make another point misclassified and therefore this boundary will always keep on moving to make the current point correctly classified. An illustration of this can be seen below.
 
 We used a single layer Perceptron, trained using the Delta learning rule to classify this. We expected the learning algorithm to converge like it should, when using appropriate learning rate. As it turned out the algorithm did converge and we obtained the decision boundary shown in the picture below. The other picture shows how the training error developed through the training. It decreases fast in the beginning until it reaches convergence.
 \begin{figure}[htb]
@@ -132,11 +141,26 @@ We used a single layer Perceptron, trained using the Delta learning rule to clas
         \label{fig:Decision-boundary-not-linearly-separable}
     \end{subfigure}
     \hfill
+\end{figure}
+
+\begin{figure}[htb]
+    \centering
     \begin{subfigure}{0.4\textwidth}
-        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron_learning_nonLinear.png}
-        \caption{Decision boundary on the data set that is not linearly separable with bias using perceptron learning rule}
-        \label{fig:Error-convergance}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron_learning_nonLinear_with_bias.png}
+        \caption{Decision boundary on data set that is not linearly separable  using perceptron learning rule}
+        \label{fig:Decision-boundary-not-linearly-separable}
     \end{subfigure}
+    \hfill
+\end{figure}
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron_learning_nonLinear_with_bias.png}
+        \caption{Decision boundary on data set that is not linearly separable  using perceptron learning rule}
+        \label{fig:Decision-boundary-not-linearly-separable}
+    \end{subfigure}
+    \hfill
 \end{figure}
 
 
