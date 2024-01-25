@@ -34,7 +34,7 @@ Our major goals in the assignment were
 \item Explore how the bias affects the convergence of the delta learning algorithm
 \end{itemize}
 
-This assignment was scoped on the delta and perceptron learning rule.\textbf{ For the delta rule we used batch learning and sequential learning; for perceptron learning rule, we only used sequential learning.} The limitations were the different learning rate
+This assignment was scoped on the delta and perceptron learning rule. For the delta rule we used batch learning and sequential learning; for perceptron learning rule, we only used sequential learning. The limitations were the different learning rate
 
 \section{Methods} This lab was conducted three separate times as we did not collaborate when writing the code. We all did the code separately then compared our results. The code was written in Jupyter notebook and regular python v3.9 file. We all drew more or less the same conclusions based on our results however got different graphs. Numpy function and matplot were the only libraries used.  \\
 
@@ -82,14 +82,14 @@ The decision boundary passes through origo regardless if it is not the optimal s
     \centering
     \begin{subfigure}{0.4\textwidth}
         \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/delta-linear-seperable-bias-sequential.png}
-        \caption{Delta rule with 8 iterations}
-        \label{fig:Delta Rule without bias, iteration 8}
+        \caption{Delta rule with sequential learning}
+        \label{fig:Delta Rule with sequential learning}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.4\textwidth}
         \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/delta-linear-seperable-bias-BATCH.png}
-        \caption{Delta rule with 100 iterations}
-        \label{fig:DeltaRule-Batch}
+        \caption{Delta rule with batch learning}
+        \label{fig:DeltaRule with batch learning}
     \end{subfigure}
     \caption{Mean square error comparison of online and sequential learning}
     \label{fig:DeltaRule-NoBias}
@@ -114,6 +114,21 @@ We used a single layer Perceptron, trained using the Delta learning rule to clas
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/error-convergance.png}
+        \caption{Delta rule with 100 iterations}
+        \label{fig:Error-convergance}
+    \end{subfigure}
+\end{figure}
+
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results}
+        \caption{Decision boundary on data set that is not linearly separable}
+        \label{fig:Decision-boundary-not-linearly-separable}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
         \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/Delta-linear-seperable-NO-BIAS-ITERATION100.png}
         \caption{Delta rule with 100 iterations}
         \label{fig:Perceptron}
@@ -121,8 +136,6 @@ We used a single layer Perceptron, trained using the Delta learning rule to clas
     \caption{Decision Boundary for Delta rule without bias }
     \label{fig:DeltaRule-NoBias}
 \end{figure}
-
-
 
 
 \section{Final remarks \normalsize{\textit{(ca. 0.5 page)}}} \textbf{Rakin Ali }
