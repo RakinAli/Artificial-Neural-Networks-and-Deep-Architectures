@@ -1,6 +1,5 @@
 \documentclass[a4paper]{article}
 
-\usepackage[swedish]{babel}
 \usepackage[latin1]{inputenc}
 \usepackage{amssymb}
 \usepackage{framed}
@@ -35,13 +34,13 @@ Our major goals in the assignment were
 \item Explore how the bias affects the convergence of the delta learning algorithm
 \end{itemize}
 
-This assignment was scoped on the delta and perceptron learning rule. For the delta rule we used batch learning and sequential learning and for the delta rule we only used sequential learning. The limitations were the different learning rate
+This assignment was scoped on the delta and perceptron learning rule.\textbf{ For the delta rule we used batch learning and sequential learning and for the delta rule we only used sequential learning.} The limitations were the different learning rate
 
 \section{Methods} This lab was conducted three separate times as we did not collaborate when writing the code. We all did the code separately then compared our results. The code was written in Jupyter notebook and regular python v3.9 file. We all drew more or less the same conclusions based on our results however got different graphs. Numpy function and matplot were the only libraries used.  \\
 
 \section{Results and discussion}
 \subsection{Classification with a single-layer perceptron}
-In this Section we compared learning algorithm with a single perception. The algorithms compared were delta rule and perception learning. From the lectures we learned that perceptron learning converges to the "first best solution" it finds however that result does not generalise well compared to delta rule. This is evident in figure \ref{fig:Decision Boundary} as the boundary line generalizes better. Regarding convergence, delta rule converges faster 
+\textbf{Perceptron versus Delta Rule Learning: }In this Section we compared two learning algorithms with a single perception. The algorithms compared were delta rule and perception learning. From the lectures we learned that perceptron learning converges to the "first best solution" it finds however that result does not generalize well compared to delta rule. This is evident in figure \ref{fig:Decision Boundary} as the boundary line generalizes better. Regarding convergence, delta rule converges faster as a lot less iterations were needed. 
 \begin{figure}[htb]
     \centering
     \begin{subfigure}{0.4\textwidth}
@@ -58,18 +57,58 @@ In this Section we compared learning algorithm with a single perception. The alg
     \caption{Decision Boundary for Delta rule and Perceptron Rule}
     \label{fig:Decision Boundary}
 \end{figure}\\
-we also removed the bias to check how well delta rule converges. Belo
+\textbf{Removing Bias check: }we also removed the bias to check how well delta rule converges. This can be seen in figure \ref{fig:DeltaRule-NoBias}
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/Delta-linear-seperable-NO-BIAS.png}
+        \caption{Delta rule with 8 iterations}
+        \label{fig:Delta Rule without bias, iteration 8}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/Delta-linear-seperable-NO-BIAS-ITERATION100.png}
+        \caption{Delta rule with 100 iterations}
+        \label{fig:Perceptron}
+    \end{subfigure}
+    \caption{Decision Boundary for Delta rule without bias }
+    \label{fig:DeltaRule-NoBias}
+\end{figure}
+The decision boundary passes through origo regardless if it is not the optimal solution. The slope changes to become as optimal as possible. The bias simply changes the "starting" position of the slope which makes it easier to find the optimal decision boundary. 
 
-
+\textbf{Batch versus sequential learning:} Lastly we compared sequential versus batch learning. They converge to the same result however batch makes the changes faster
 
 
 \subsection{Classification of data that are not linearly separable\textit{(ca.1.5-2 pages)}}
-Let's first try to do regular classification. Here the bias is 
+We created a dataset that is not linearly separable by using the same method as in the assignments above, moving the means of the two clusters closer together. That way the clusters overlap, and no longer are linearly separable. A picture of this new set of data points can be seen below.
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Labs/Lab 1/Lab 1a/Results/overlapping_dataset.png}
+    \caption{Data set that is not linearly separable}
+    \label{fig:enter-label}
+\end{figure}
+We used a single layer Perceptron, trained using the Delta learning rule to classify this. We expected the learning algorithm to converge like it should, when using appropriate learning rate. As it turned out the algorithm did converge and we obtained the decision boundary shown in the picture below. The other picture shows how the training error developed through the training. It decreases fast in the beginning until it reaches convergence.
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/decicion-boundary-not-separable.png}
+        \caption{Decision boundary on data set that is not linearly separable}
+        \label{fig:Decision-boundary-not-linearly-separable}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/Delta-linear-seperable-NO-BIAS-ITERATION100.png}
+        \caption{Delta rule with 100 iterations}
+        \label{fig:Perceptron}
+    \end{subfigure}
+    \caption{Decision Boundary for Delta rule without bias }
+    \label{fig:DeltaRule-NoBias}
+\end{figure}
+
 
 
 
 \section{Final remarks \normalsize{\textit{(ca. 0.5 page)}}} \textbf{Rakin Ali }
 \textit{Please share your final reflections on the lab, its content and your own learning. Which parts of the lab assignment did you find confusing or not necessarily helping in understanding important concepts and which parts you have found interesting and relevant to your learning experience? \\
 Here you can also formulate your opinion, interpretation or speculation about some of the simulation outcomes. Please add any follow-up questions that you might have regarding the lab tasks and the results you have produced.}
-
 \end{document}
