@@ -1,6 +1,24 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
+import sys
+
+batch_learning = False
+separable = False
+bias = True
+
+
+if len(sys.argv) > 1:
+    if sys.argv[1] == 'batch':
+        batch_learning = True
+    if sys.argv[1] == 'no-bias':
+        bias = False
+        separable = True
+        batch_learning = True
+
+if len(sys.argv) > 2:
+    if sys.argv[2] == 'separable':
+        separable = True
 
 def simultaneous_shuffle(a, b):
     assert (len(a) == len(b))
@@ -15,6 +33,16 @@ mA = [1.5, 0.5]
 sigmaA = 0.5
 mB = [-1.5, 0.5]
 sigmaB = 0.5
+
+# If dataset should not be linearly separable
+if not separable:
+    mA = [1, 0.5]
+    mB = [-1, 0.5]
+
+# no bias dataset
+if not bias:
+    mA = [3, 0.5]
+    mB = [0, 0.5]
 
 classA = np.zeros(shape=(2, n))
 classB = np.zeros(shape=(2, n))
@@ -35,6 +63,9 @@ dataset, targets = simultaneous_shuffle(dataset, targets)
 dataset = dataset.T
 targets = targets.T
 
+if bias:
+    dataset = np.vstack([dataset, np.ones(dataset.shape[1])])
+
 print ('dataset.shape: ' + str(dataset.shape))
 print ('targets.shape: ' + str(targets.shape))
 
@@ -42,13 +73,16 @@ print ('targets.shape: ' + str(targets.shape))
 W = np.random.normal(size=(dataset.shape[0], 1))
 
 # Training
-iterations = 100
+iterations = 100 if batch_learning else 100 * dataset.shape[1]
 lr = 0.001
 iterations_values = []
 for i in range(iterations):
-
-    batch = dataset#[:, 0:10]
-    batch_targets = targets#[:, 0:10]
+    if batch_learning:
+        batch = dataset#[:, 0:10]
+        batch_targets = targets#[:, 0:10]
+    else:
+        batch = np.array([dataset[:, i % dataset.shape[1]]]).T
+        batch_targets = np.array([targets[:, i % dataset.shape[1]]]).T
 
     error =  W.T @ batch - batch_targets
 
@@ -63,6 +97,8 @@ plt.subplots_adjust(bottom=0.2)
 
 x = np.linspace(-100, 100, 100)
 y = W[0]/W[1] * x
+if bias:
+    y = W[0]/W[1] * x + W[2]/W[1]
 
 l = plt.plot(x, y)
 
@@ -72,6 +108,8 @@ def update_slider(val):
 
     x = np.linspace(-100, 100, 100)
     y = current_w[0]/current_w[1] * x
+    if bias:
+        y = current_w[0]/current_w[1] * x + current_w[2]/current_w[1]
 
     l[0].set_ydata(y)
 
