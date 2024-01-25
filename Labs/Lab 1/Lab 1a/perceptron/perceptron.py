@@ -6,7 +6,6 @@ def simultaneous_shuffle(a, b):
     permutation = np.random.permutation(len(a))
     return a[permutation], b[permutation]
 
-# Generate linearly seperable data.
 np.random.seed(2)
 n = 100
 mA = [3, 0.5]
@@ -60,7 +59,7 @@ for i in range(iterations):
     datapoint = dataset[:, index]
     results = np.dot(W, datapoint)
 
-    errors.append(np.sum(np.asmatrix(W.T @ dataset).T - targets))
+    errors.append(np.sum(np.power(np.asmatrix(W.T @ dataset).T - targets, 2)))
 
     classification = 1 if results >= 0 else 0
     true_class = targets[index, 0]
@@ -86,5 +85,7 @@ plt.scatter(classB[0], classB[1], color='green')
 plt.show()
 
 plt.plot(list(range(iterations)), errors)
+plt.ylabel('Square error')
+plt.xlabel('Iterations')
 plt.show()
 
