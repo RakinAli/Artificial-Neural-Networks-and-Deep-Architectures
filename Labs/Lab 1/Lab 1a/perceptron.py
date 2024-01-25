@@ -31,8 +31,6 @@ classB[0] = np.random.normal(loc=mB[0], scale=sigmaB, size=n)
 classB[1] = np.random.normal(loc=mB[1], scale=sigmaB, size=n)
 
 
-
-
 dataset = np.concatenate((classA.T, classB.T))
 targets = np.concatenate((targetA, targetB))
 
