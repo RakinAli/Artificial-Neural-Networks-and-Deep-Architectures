@@ -94,7 +94,7 @@ for i in range(iterations):
     errors = (W.T @ batch - batch_targets) ** 2 
 
     iterations_values.append(W)
-    error_values.append(np.sum(errors))
+    error_values.append(np.sum(errors)/batch.shape[1])
 
 
 fig, ax = plt.subplots()
@@ -130,4 +130,6 @@ ax.set_xlim(np.min(dataset[0,:]) - 0.5, np.max(dataset[0, :])+ 0.5)
 plt.show()
 
 plt.scatter(list(range(iterations)), error_values)
+plt.ylabel('Mean square error')
+plt.xlabel('Iterations')
 plt.show()
