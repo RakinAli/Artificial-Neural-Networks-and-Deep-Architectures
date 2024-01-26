@@ -30,17 +30,56 @@ classA[1] = np.random.normal(loc=mA[1], scale=sigmaA, size=n)
 classB[0] = np.random.normal(loc=mB[0], scale=sigmaB, size=n)
 classB[1] = np.random.normal(loc=mB[1], scale=sigmaB, size=n)
 
+classA = classA.T
+classB = classB.T
+
+testA_indexes = np.random.choice(list(range(100)), 50, replace=False)
+testB_indexes = np.random.choice(list(range(100)), 0, replace=False)
+
+trainA_indexes = np.array([x for x in range(100) if x not in testA_indexes])
+trainB_indexes = np.array([x for x in range(100) if x not in testB_indexes])
+
+trainA = classA[trainA_indexes].T
+trainB = classB[trainB_indexes].T
+train_targetsA = targetA[trainA_indexes]
+train_targetsB = targetB[trainB_indexes]
+
+testA = classA[testA_indexes].T
+testB = classB[testB_indexes].T
+test_targetsA = targetA[testA_indexes]
+test_targetsB = targetB[testB_indexes]
+
+classA = classA.T
+classB = classB.T
+
+train_dataset = np.concatenate((trainA.T, trainB.T))
 dataset = np.concatenate((classA.T, classB.T))
-test_data = np.concatenate((testA.T, testB.T))
 targets = np.concatenate((targetA, targetB))
+train_targets = np.concatenate((train_targetsA, train_targetsB))
+test_dataset = np.concatenate((testA.T, testB.T))
 test_targets = np.concatenate((test_targetsA, test_targetsB))
 
 dataset, targets = simultaneous_shuffle(dataset, targets)
+train_dataset, train_targets = simultaneous_shuffle(train_dataset, train_targets)
+test_dataset, test_targets = simultaneous_shuffle(test_dataset, test_targets)
 
 dataset = dataset.T
 targets = targets.T
+train_dataset = train_dataset.T
+train_targets = train_targets.T
+test_dataset = test_dataset.T
+test_targets = test_targets.T
+
+print (dataset.shape)
+print (targets.shape)
+print (train_dataset.shape)
+print (train_targets.shape)
+print (test_dataset.shape)
+print (test_targets.shape)
 
 dataset = np.vstack([dataset, np.ones(dataset.shape[1])])
+train_dataset = np.vstack([train_dataset, np.ones(train_dataset.shape[1])])
+test_dataset = np.vstack([test_dataset, np.ones(test_dataset.shape[1])])
 
 print ('dataset.shape: ' + str(dataset.shape))
 print ('targets.shape: ' + str(targets.shape))
@@ -54,8 +93,8 @@ lr = 0.0005
 iterations_values = []
 error_values = []
 for i in range(iterations):
-    batch = dataset#[:, 0:10]
-    batch_targets = targets#[:, 0:10]
+    batch = train_dataset#[:, 0:10]
+    batch_targets = train_targets#[:, 0:10]
 
     e =  W.T @ batch - batch_targets
 
@@ -99,3 +138,46 @@ plt.show()
 
 plt.scatter(list(range(iterations)), error_values)
 plt.show()
+
+
+
+def calculate_accuracy_per_group(true_values, prediction_values):
+    true_group_A = 0
+    true_group_B = 0
+    false_groupA = 0
+    false_groupB = 0 
+    
+    for t, p in zip(true_values, prediction_values):
+        if t == -1:
+            if t == p:
+                true_group_B = true_group_B + 1
+            else:
+                false_groupB = false_groupB + 1
+        else:
+            if t == p:
+                true_group_A = true_group_A + 1
+            else:
+                false_groupA = false_groupA + 1
+
+    return true_group_A / (true_group_A + false_groupA) if (true_group_A + false_groupA > 0) else -1, true_group_B / (true_group_B + false_groupB) if true_group_B + false_groupB > 0 else -1
+
+
+test_values = W.T @ test_dataset
+test_predictions = [1 if x >= 0 else -1 for x in test_values[0]]
+
+train_values = W.T @ train_dataset
+train_predictions = [1 if x >= 0 else -1 for x in train_values[0]]
+
+dataset_values = W.T @ dataset
+dataset_predictions = [1 if x >= 0 else -1 for x in dataset_values[0]]
+
+test_accuracyA, test_accuracyB = calculate_accuracy_per_group(test_targets[0], test_predictions)
+train_accuracyA, train_accuracyB = calculate_accuracy_per_group(train_targets[0], train_predictions)
+dataset_accuracyA, dataset_accuracyB = calculate_accuracy_per_group(targets[0], dataset_predictions)
+
+print (test_accuracyA)
+print (test_accuracyB)
+print (train_accuracyA)
+print (train_accuracyB)
+print (dataset_accuracyA)
+print (dataset_accuracyB)
