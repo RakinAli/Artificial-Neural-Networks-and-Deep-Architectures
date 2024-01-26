@@ -33,8 +33,8 @@ classB[1] = np.random.normal(loc=mB[1], scale=sigmaB, size=n)
 classA = classA.T
 classB = classB.T
 
-testA_indexes = np.random.choice(list(range(100)), 50, replace=False)
-testB_indexes = np.random.choice(list(range(100)), 0, replace=False)
+testA_indexes = np.concatenate((np.random.choice(list(range(50)), 10, replace=False), np.random.choice(list(range(50)), 40, replace=False)))
+testB_indexes = np.random.choice(list(range(100)), 50, replace=False)
 
 trainA_indexes = np.array([x for x in range(100) if x not in testA_indexes])
 trainB_indexes = np.array([x for x in range(100) if x not in testB_indexes])
@@ -111,25 +111,25 @@ for i in range(iterations):
 fig, ax = plt.subplots()
 #plt.subplots_adjust(bottom=0.2)
 
-x = np.linspace(-100, 100, 100)
-y = W[0]/W[1] * x + W[2]/W[1]
+x = np.linspace(-100, 100, 1000)
+y = -W[0]/W[1] * x - W[2]/W[1]
 
-l = plt.plot(x, y)
-
-def update_slider(val):
-    iteration_to_show = int(val) - 1
-    current_w = iterations_values[iteration_to_show]
-
-    x = np.linspace(-100, 100, 100)
-    y = current_w[0]/current_w[1] * x + current_w[2]/current_w[1]
-
-    l[0].set_ydata(y)
-
-ax.scatter(classA[0], classA[1], color='red')
-ax.scatter(classB[0], classB[1], color='green')
 ax.set_ylim(np.min(dataset[1,:]) - 0.5, np.max(dataset[1, :])+ 0.5)
 ax.set_xlim(np.min(dataset[0,:]) - 0.5, np.max(dataset[0, :])+ 0.5)
 
+l = ax.plot(x, y)
+
+#def update_slider(val):
+#    iteration_to_show = int(val) - 1
+#    current_w = iterations_values[iteration_to_show]
+#
+#    x = np.linspace(-100, 100, 100)
+#    y = current_w[0]/current_w[1] * x + current_w[2]/current_w[1]
+#
+#    l[0].set_ydata(y)
+#
+ax.scatter(classA[0], classA[1], color='red')
+ax.scatter(classB[0], classB[1], color='green')
 #ax_slider = plt.axes([0.25, 0.1, 0.5, 0.03])
 #slider = Slider(ax_slider, label='iteration', valmin=1, valmax=iterations, valinit=iterations, valfmt='%0.0f')
 #slider.on_changed(update_slider)
