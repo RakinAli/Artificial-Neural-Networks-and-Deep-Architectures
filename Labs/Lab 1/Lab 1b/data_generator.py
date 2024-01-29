@@ -106,6 +106,7 @@ class data_generator:
         plt.show()
 
 
+"""    
 # Parameters for the data generator
 mA = [1.0, 0.3]
 sigmaA = 0.2
@@ -127,7 +128,7 @@ dg.plot_data(training_data_1, training_targets_1)
 (training_data_2, training_targets_2), (
     validation_data_2,
     validation_targets_2,
-) = dg.generate_data(which_Class="AB", training_percentage=[0.9, 0.])
+) = dg.generate_data(which_Class="AB", training_percentage=[0.9, 0.1])
 
 # Plot the training data
 dg.plot_data(training_data_2, training_targets_2)
@@ -138,3 +139,4 @@ sizes_1 = (len(training_targets_1), len(validation_targets_1))
 sizes_2 = (len(training_targets_2), len(validation_targets_2))
 
 sizes_1, sizes_2
+"""
