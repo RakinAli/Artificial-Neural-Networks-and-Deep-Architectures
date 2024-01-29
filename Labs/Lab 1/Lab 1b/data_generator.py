@@ -80,6 +80,7 @@ if __name__ == "__main__":
     mB = [-1.5, 0.5]
     sigmaB = 0.5
 
+
     dg = data_generator(mA, sigmaA, mB, sigmaB)
     dataset, targets = dg.generate_data()
     dg.plot_data(dataset, targets)
