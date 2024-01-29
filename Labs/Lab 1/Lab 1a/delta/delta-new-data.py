@@ -70,13 +70,6 @@ train_targets = train_targets.T
 test_dataset = test_dataset.T
 test_targets = test_targets.T
 
-print (dataset.shape)
-print (targets.shape)
-print (train_dataset.shape)
-print (train_targets.shape)
-print (test_dataset.shape)
-print (test_targets.shape)
-
 dataset = np.vstack([dataset, np.ones(dataset.shape[1])])
 train_dataset = np.vstack([train_dataset, np.ones(train_dataset.shape[1])])
 test_dataset = np.vstack([test_dataset, np.ones(test_dataset.shape[1])])
