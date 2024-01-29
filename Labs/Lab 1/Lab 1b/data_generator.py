@@ -22,30 +22,40 @@ class data_generator:
         return a[permutation], b[permutation]
 
     # Method to generate the data
-    def generate_data(self):
+    def generate_data(self, which_Class=None, percentage=None):
         np.random.seed(2)
 
-        classA = np.zeros((2, self.SAMPLES))
-        classB = np.zeros((2, self.SAMPLES))
-        targetA = np.ones((self.SAMPLES, 1))
-        targetB = np.zeros((self.SAMPLES, 1))
+        # Adjust the number of samples based on the percentage provided
+        if which_Class == "AB" and percentage is not None:
+            samplesA = int(percentage[0] * self.SAMPLES)
+            samplesB = int (percentage[1] * self.SAMPLES)
+        else:
+            samplesA = (
+                self.SAMPLES if which_Class != "A" else int(percentage * self.SAMPLES)
+            )
+            samplesB = (
+                self.SAMPLES if which_Class != "B" else int(percentage * self.SAMPLES)
+            )
 
-        classA[0] = np.random.normal(
-            loc=self.mA[0], scale=self.sigmaA, size=self.SAMPLES
-        )
-        classA[1] = np.random.normal(
-            loc=self.mA[1], scale=self.sigmaA, size=self.SAMPLES
-        )
+        # Initialize arrays for class A and B
+        classA = np.zeros((2, samplesA))
+        classB = np.zeros((2, samplesB))
+        targetA = np.ones((samplesA, 1))
+        targetB = np.zeros((samplesB, 1))
 
-        classB[0] = np.random.normal(
-            loc=self.mB[0], scale=self.sigmaB, size=self.SAMPLES
-        )
-        classB[1] = np.random.normal(
-            loc=self.mB[1], scale=self.sigmaB, size=self.SAMPLES
-        )
+        # Generate data for class A
+        classA[0] = np.random.normal(loc=self.mA[0], scale=self.sigmaA, size=samplesA)
+        classA[1] = np.random.normal(loc=self.mA[1], scale=self.sigmaA, size=samplesA)
 
+        # Generate data for class B
+        classB[0] = np.random.normal(loc=self.mB[0], scale=self.sigmaB, size=samplesB)
+        classB[1] = np.random.normal(loc=self.mB[1], scale=self.sigmaB, size=samplesB)
+
+        # Combine the data from both classes
         dataset = np.concatenate((classA.T, classB.T))
         targets = np.concatenate((targetA, targetB))
+
+        # Shuffle the combined dataset and targets
         dataset, targets = self.simultaneous_shuffle(dataset, targets)
         return dataset, targets
 
@@ -71,16 +81,22 @@ class data_generator:
         plt.show()
 
 
-if __name__ == "__main__":
-    # Choose paramters mA, SigmA and mB, SigmB so that it is linearly seperable
+# Parameters from the image
+mA = [1.0, 0.3]
+sigmaA = 0.2
+mB = [0.0, -0.1]
+sigmaB = 0.3
 
-    # 3.1.1 Linearly seperable data
-    mA = [1.5, 0.5]
-    sigmaA = 0.5
-    mB = [-1.5, 0.5]
-    sigmaB = 0.5
+# Create an instance of the data generator
+dg = data_generator(mA, sigmaA, mB, sigmaB)
 
+# Now we can call the generate_data method with the class and percentage to generate a subset of data.
+# For example, to generate 50% of class A data, we would call:
+dataset, targets = dg.generate_data(which_Class="A", percentage=0.5)
 
-    dg = data_generator(mA, sigmaA, mB, sigmaB)
-    dataset, targets = dg.generate_data()
-    dg.plot_data(dataset, targets)
+# Plot the data
+dg.plot_data(dataset, targets)
+
+# Checking the size of the generated data to ensure it's correct as per the requirement
+print(f"Class A data points: {np.sum(targets == 1)}")
+print(f"Class B data points: {np.sum(targets == 0)}")
