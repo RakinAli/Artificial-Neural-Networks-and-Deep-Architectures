@@ -37,12 +37,6 @@ T = T.T
 
 X = np.vstack([X, np.ones(X.shape[1])])
 
-print (classA.shape)
-print (classB.shape)
-print (T.shape)
-print (X.shape)
-
-
 ###############################
 
 # activation function (sigmoid with range ]-1:1[ )
@@ -56,6 +50,7 @@ def sigmoid_derivative(sigmoid_values):
 dim_i = X.shape[0] # input layer dimension
 hidden_nodes = 9 # hidden layer dimension
 output_nodes = 1 # output layer dimension
+lr = 0.001 # learning rate
 
 # Initialize the weights:
 W_hidden = np.random.normal(0, 1, (hidden_nodes, dim_i))
@@ -68,8 +63,33 @@ A_1 = activation(H_1)
 Y_1 = W_output @ A_1
 O = activation(Y_1)
 
-# backwards pass
-dW_output = (T - O) * sigmoid_derivative(O) * A_1
-dW_hidden = dW_output * sigmoid_derivative(A_1) * X
+# calculate mean square error:
+mse = 1/X.shape[1] * (O - T)**2
 
-print (dW_output.shape)
+# backwards pass
+dA_output = (O - T) * sigmoid_derivative(O)
+dW_output = dA_output @ A_1.T
+
+dA_hidden = W_output.T @ (dA_output)
+dW_hidden = (dA_hidden * sigmoid_derivative(A_1)) @ X.T
+
+
+for _ in range(100000):
+    H_1 = W_hidden @ X
+    A_1 = activation(H_1)
+    Y_1 = W_output @ A_1
+    O = activation(Y_1)
+
+    # calculate mean square error:
+    mse = 1/X.shape[1] * (O - T)**2
+    print (np.sum(mse))
+    
+    dA_output = (O - T) * sigmoid_derivative(O)
+    dW_output = dA_output @ A_1.T
+
+    dA_hidden = W_output.T @ (dA_output)
+    dW_hidden = (dA_hidden * sigmoid_derivative(A_1)) @ X.T
+
+    
+    W_output = W_output - lr * dW_output
+    W_hidden = W_hidden - lr * dW_hidden
