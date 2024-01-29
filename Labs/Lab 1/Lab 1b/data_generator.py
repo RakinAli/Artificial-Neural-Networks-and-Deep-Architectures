@@ -21,22 +21,7 @@ class data_generator:
         permutation = np.random.permutation(len(a))
         return a[permutation], b[permutation]
 
-    # Method to generate the data
-    def generate_data(self, which_Class=None, percentage=None):
-        np.random.seed(2)
-
-        # Adjust the number of samples based on the percentage provided
-        if which_Class == "AB" and percentage is not None:
-            samplesA = int(percentage[0] * self.SAMPLES)
-            samplesB = int (percentage[1] * self.SAMPLES)
-        else:
-            samplesA = (
-                self.SAMPLES if which_Class != "A" else int(percentage * self.SAMPLES)
-            )
-            samplesB = (
-                self.SAMPLES if which_Class != "B" else int(percentage * self.SAMPLES)
-            )
-
+    def generate_class_data(self, samplesA, samplesB):
         # Initialize arrays for class A and B
         classA = np.zeros((2, samplesA))
         classB = np.zeros((2, samplesB))
@@ -58,6 +43,46 @@ class data_generator:
         # Shuffle the combined dataset and targets
         dataset, targets = self.simultaneous_shuffle(dataset, targets)
         return dataset, targets
+
+    # Method to generate the data
+    def generate_data(self, which_Class=None, training_percentage=None):
+        np.random.seed(2)
+
+        if isinstance(training_percentage, list):
+            training_samplesA = int(training_percentage[0] * self.SAMPLES)
+            training_samplesB = int(training_percentage[1] * self.SAMPLES)
+            validation_samplesA = self.SAMPLES - training_samplesA
+            validation_samplesB = self.SAMPLES - training_samplesB
+        else:
+            training_samples = int(training_percentage * self.SAMPLES)
+            validation_samples = self.SAMPLES - training_samples
+            if which_Class == "A":
+                training_samplesA = training_samples
+                validation_samplesA = validation_samples
+                training_samplesB = 0
+                validation_samplesB = 0
+            elif which_Class == "B":
+                training_samplesB = training_samples
+                validation_samplesB = validation_samples
+                training_samplesA = 0
+                validation_samplesA = 0
+            else:  # If neither A nor B is specified
+                training_samplesA = training_samples
+                training_samplesB = training_samples
+                validation_samplesA = validation_samples
+                validation_samplesB = validation_samples
+
+        # Generate training data
+        training_data, training_targets = self.generate_class_data(
+            training_samplesA, training_samplesB
+        )
+
+        # Generate validation data
+        validation_data, validation_targets = self.generate_class_data(
+            validation_samplesA, validation_samplesB
+        )
+
+        return (training_data, training_targets), (validation_data, validation_targets)
 
     # Method to plot the data
     def plot_data(self, dataset, targets):
@@ -81,7 +106,7 @@ class data_generator:
         plt.show()
 
 
-# Parameters from the image
+# Parameters for the data generator
 mA = [1.0, 0.3]
 sigmaA = 0.2
 mB = [0.0, -0.1]
@@ -90,13 +115,26 @@ sigmaB = 0.3
 # Create an instance of the data generator
 dg = data_generator(mA, sigmaA, mB, sigmaB)
 
-# Now we can call the generate_data method with the class and percentage to generate a subset of data.
-# For example, to generate 50% of class A data, we would call:
-dataset, targets = dg.generate_data(which_Class="A", percentage=0.5)
+# Test 1: Single percentage value
+(training_data_1, training_targets_1), (
+    validation_data_1,
+    validation_targets_1,
+) = dg.generate_data(which_Class="AB", training_percentage=0.2)
 
-# Plot the data
-dg.plot_data(dataset, targets)
+dg.plot_data(training_data_1, training_targets_1)
 
-# Checking the size of the generated data to ensure it's correct as per the requirement
-print(f"Class A data points: {np.sum(targets == 1)}")
-print(f"Class B data points: {np.sum(targets == 0)}")
+# Test 2: List of two values
+(training_data_2, training_targets_2), (
+    validation_data_2,
+    validation_targets_2,
+) = dg.generate_data(which_Class="AB", training_percentage=[0.9, 0.])
+
+# Plot the training data
+dg.plot_data(training_data_2, training_targets_2)
+
+
+# Check sizes
+sizes_1 = (len(training_targets_1), len(validation_targets_1))
+sizes_2 = (len(training_targets_2), len(validation_targets_2))
+
+sizes_1, sizes_2
