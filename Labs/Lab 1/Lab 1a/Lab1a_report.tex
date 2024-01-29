@@ -29,12 +29,11 @@ The main objective with this assignment is to familiarize ourselves with the per
 Our major goals in the assignment were  
 \begin{itemize}
 \item Implement and explore the perceptron learning rule for simple classification tasks
-\item Implement and explore the delta learning rule for simple classification tasks 
 \item Explore how the perceptron and delta learning rule performs on linearly separable data compare to a dataset that is not linearly separable
 \item Explore how the bias affects the convergence of the delta learning algorithm
 \end{itemize}
 
-This assignment was scoped on the delta and perceptron learning rule. For the delta rule we used batch learning and sequential learning; for perceptron learning rule, we only used sequential learning. The limitations were the different learning rate
+This assignment was scoped on the delta and perceptron learning rule. For the delta rule we used batch learning and sequential learning; for perceptron learning rule, we only used sequential learning. The limitations was that we didn't test around a lot with different learning rates, we simply one the ones that seemed reasonable. 
 
 \section{Methods} This lab was conducted three separate times as we did not collaborate when writing the code. We all did the code separately then compared our results. The code was written in Jupyter notebook and regular python v3.9 file. We all drew more or less the same conclusions based on our results however got different graphs. Numpy function and matplot were the only libraries used.  \\
 
@@ -77,7 +76,7 @@ This assignment was scoped on the delta and perceptron learning rule. For the de
 The decision boundary passes through origo regardless if it is not the optimal solution. The slope changes to become as optimal as possible. The bias simply changes the "starting" position of the slope which makes it easier to find the optimal decision boundary. 
 
 \newpage
-\textbf{Batch versus sequential learning:} Lastly we compared sequential versus batch learning. They converge to the same result however batch makes the changes faster after each iteration
+\textbf{Batch versus sequential learning:} Lastly we compared sequential versus batch learning. They converge to the same result however batch makes the changes faster after each iteration. It "stores" all the changes after each epoch then adds the changes while sequential ad
 \begin{figure}[htb]
     \centering
     \begin{subfigure}{0.4\textwidth}
@@ -97,37 +96,43 @@ The decision boundary passes through origo regardless if it is not the optimal s
 
 
 \subsection{Classification of data that are not linearly separable}
-We created a dataset that is not linearly separable by using the same method as in the assignments above, moving the means of the two clusters closer together. That way the clusters overlap, and no longer are linearly separable. A picture of this new set of data points can be seen below.
-\begin{figure}[htb]
-    \centering
-    \includegraphics[width=0.8\textwidth]{Labs/Lab 1/Lab 1a/Results/overlapping_dataset.png}
-    \caption{Data set that is not linearly separable}
-    \label{fig:enter-label}
-\end{figure}
-First we tried fitting the single layer Perceptron using the Percepton learning algorithm. We expected that this would not work since it is only guaranteed that it converges if the dataset is linearly separable. Our simulations confirmed this. We tried fitting this Perceptron using the Perceptron learning rule. We calculated the mean square error in the same way as is done when using the Delta learning to get a glimpse into the error of the model. The model does not converge.
+\textbf{Perceptron training:} We created a dataset that is not linearly separable by using the same method as in the assignments above, moving the means of the two clusters closer together. First we tried fitting the single layer Perceptron using the Percepton learning algorithm. We expected that this would not work since it is only guaranteed that it converges if the dataset is linearly separable. Our simulations confirmed this. We tried fitting this Perceptron using the Perceptron learning rule. We calculated the mean square error in the same way as is done when using the Delta learning to get a glimpse into the error of the model. The model does not converge.
 
 \begin{figure}[htb]
     \centering
     \begin{subfigure}{0.4\textwidth}
-         \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/Per}
+         \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron-NON_SEPERABLE_training_errorRate(rakin-modifed).png}
         \caption{Training error when using Perceptron}
         \label{fig:Perceptron-training-error}
     \end{subfigure}
     \hfill
     \begin{subfigure}{0.4\textwidth}
         \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/perceptron-decision-boundary-not-separable.png}
-        \caption{Decision boundary obtained with perceptron learning}
+        \caption{Decision boundary}
         \label{fig:decision-boundary}
     \end{subfigure}
+    \caption{Error rate and Decision boundary of Perceptron Learning}
 \end{figure}
 
 The training error never reaches a point where it is stable. This makes sense since there will always be a point that is misclassified. When the training algorithm reaches that point it moves the boundary in a such a way that it will be on the correct side of the boundary. That will make another point misclassified and therefore this boundary will always keep on moving to make the current point correctly classified. An illustration of this can be seen below.
 
-An illustration of how the decision boundary differs and is not stable can be seen in the two figures. They show how the decision line changes even after ten thousand iterations. In the first picture, we see a line, and after 10000 iterations, and in the second figure, we see another line that is different from the first one. It confirms the theory that the perceptron rule does not converge.   
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.3\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/p_non_linear10000.png}
+        \caption{Decision boundary after 10000 iterations}
+        \label{fig:Decision-boundary-not-linearly-separable}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.3\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/p_non_linear11000.png}
+        \caption{Decision boundary after 11000 iterations}
+        \label{fig:Decision-boundary-not-linearly-separable}
+    \end{subfigure}
+    \caption{Two different decision boundaries obtained with the perceptron learning}
+\end{figure}
 
-We used a single layer Perceptron, trained using the Delta learning rule to classify this. We expected the learning algorithm to converge like it should, when using appropriate learning rate. As it turned out the algorithm did converge and we obtained the decision boundary shown in the picture below. The other picture shows how the training error developed through the training. It decreases fast in the beginning until it reaches convergence.
-
- 
+\textbf{Delta Rule Training: }We used a single layer Perceptron, trained using the Delta learning rule to classify the same dataset seen in figure. We expected the learning algorithm to converge when using an appropriate learning rate. The algorithm did converge and we obtained the decision boundary shown in figure \ref{fig:6}. The other picture shows how the training error developed through the training. It decreases fast in the beginning until it reaches convergence. 
 \begin{figure}[htb]
     \centering
     \begin{subfigure}{0.4\textwidth}
@@ -141,36 +146,81 @@ We used a single layer Perceptron, trained using the Delta learning rule to clas
         \caption{Delta rule with 100 iterations}
         \label{fig:Error-convergance}
     \end{subfigure}
+    \caption{Decision boundary and MSE using the delta rule}
+    \label{fig:6}
+\end{figure}
+We created another kind of dataset that is not linearly separable. It was created in such a way that the data belonging to one of the classes was generated the same way as before, i.e. a multivariate Gaussian with a single mean and variance. The other class was created in such a way that half of the data points belonging to that class were generated using the mean $mA$ and the other half generated using the mean $-mA$. We then trained the perceptron using the delta learning rule and obtained the decision boundary shown in figure \ref{fig:new-dataset}. We can see that the delta learning rule does converge but the mean square error is a lot higher than for the previous data sets. And the accuracy obtained on this data set is 0.775
+\begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/new-data.png}
+        \caption{The new data set}
+        \label{fig:new-dataset}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/new-data-convergance.png}
+        \caption{Delta rule with 100 iterations}
+        \label{fig:new-data-convergance}
+    \end{subfigure}
+    \caption{Decision boundary and convergance}
+    \label{fig:8}
 \end{figure}
 
+We then tried a few ways to exclude data from the set of data that the model is trained on. We used the data that was left as unseen data to test the accuracy. The scenarios are the following:
+\begin{enumerate}
+    \item Random 25\% from each class
+    \item Random 50\% from class A
+    \item Random 50\% from class B
+    \item 20\% from a subset of classA for which classA(1,:)<0 and 80\% from a
+subset of classA for which classA(1,:)>0
+\end{enumerate}
 
+The decision boundaries obtained for each of these scenarios can be seen in figure \ref{fig:9}.
 
 \begin{figure}[htb]
     \centering
     \begin{subfigure}{0.4\textwidth}
-        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/p_non_linear10000.png}
-        \caption{Decision boundary on data set that is not linearly separable  using perceptron learning rule after 10000 iterations}
-        \label{fig:Decision-boundary-not-linearly-separable}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/scenario1.png}
+        \caption{Scenario 1}
+        \label{fig:scenario-1}
     \end{subfigure}
     \hfill
-\end{figure}
-
-\begin{figure}[htb]
-    \centering
     \begin{subfigure}{0.4\textwidth}
-        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/p_non_linear11000.png}
-        \caption{Decision boundary on data set that is not linearly separable  using perceptron learning rule after 11000}
-        \label{fig:Decision-boundary-not-linearly-separable}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/scenario2.png}
+        \caption{Scenario 2}
+        \label{fig:scenario-2}
+    \end{subfigure}
+     \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/scenario3.png}
+        \caption{Scenario 3}
+        \label{fig:scenario-3}
     \end{subfigure}
     \hfill
+    \begin{subfigure}{0.4\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1a/Results/scenario4.png}
+        \caption{Scenario 4}
+        \label{fig:scenario-4}
+    \end{subfigure}
+    \caption{Decision boundaries with different data removed}
+    \label{fig:9}
 \end{figure}
 
+The accuracy of the training data in scenario 1 was 81\% for class A and 81\% for class B. Which is not much worse than when none of the data was removed. The accuracy on the test data was slightly worse but not significantly or 80\% for class A and 72\% for class B. This makes sense since the data that is removed before training is removed uniformly from each class so the 
+\\
+Scenario 2 gave us much more interesting results. The accuracy on the training set was only 0.36 for class A and 0.93 for class B. The accuracy for the test set was 28\% for class A. Since the training set is unbalanced the wrongly classified points in class A do not contribute as much to the loss function that we are minimizing. Therefore the accuracy is much lower for class A.
+\\
+Scenario 3 was very similar to scenario 2 but the other way around. The perceptron classified 97\% of the points in class A correctly but only 28\% of the test set points in class B.\\
+We found scenario 4 to be the most interesting one. The training accuracy was 76\% for class A and 96\% for class B. But the test accuracy was only 18\% for class A. since we removed most of the points in the right cluster of points belonging to class A and only a few from the left cluster, the perceptron benefits from classifying more points from class B correctly. As can be seen in the figure above the classification boundary is a bit to the right of the center of cluster B.
+
+\section{Final remarks} 
+In this lab we implement the theoretical concepts practically. A single perception was created and trained using two learning algorithms being delta rule and perception training. What we learned was:
+\begin{itemize}
+    \item The bias term matters. Removing it affects the decision significantly and can decrease the performance of the perception
+    \item Initialization matters. We had to find different learning rules and continuously asked ourselves \textit{is this result reasonable?} Many times it was due to the learning rate being too high or low, too few iterations and other stuff that mattered. 
+    \item Delta rule in most cases seems to be the better option. It produces a better decision boundary, converges somewhat faster than perception learning and generalizes better. 
+    \item Sequential versus batch should not matter much when dealing with small datasets. From our findings on this lab, we did not notice a significant difference in terms of results other than the iterations were much higher for sequential. For large datasets, batch would have speed up computations significantly. 
+\end{itemize}
 
 
-
-
-
-
-\section{Final remarks \normalsize{\textit{(ca. 0.5 page)}}} 
-Overall, the lab was interesting as it helped us implement the theoretical concepts we learned from the lectures and see a practical example of how the classification task could be conducted using the perceptron implementation. It was also beneficial for our learning to use different approaches, the perceptron learning rule, and the delta rule, to classify the data and see which algorithm converges faster. One question could be asked if it is sufficient to use only one perceptron to classify binary data in real live implementation. Or the use of only perception is just for learning purposes and not used in practical examples. 
 \end{document}

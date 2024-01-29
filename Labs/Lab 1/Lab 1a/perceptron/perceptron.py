@@ -45,12 +45,14 @@ W = np.random.normal(size=(dataset.shape[0]))
 
 
 # Show the data in a plot
-x = np.linspace(-1, 1, 100)
-y = W[0] / W[1] * x + W[2] / W[1]
+x = np.linspace(-100, 100, 100)
+y = W[0]/W[1] * x + W[2] / W[1]
 
 plt.plot(x, y)
-plt.scatter(classA[0], classA[1], color="red")
-plt.scatter(classB[0], classB[1], color="green")
+plt.scatter(classA[0], classA[1], color='red')
+plt.scatter(classB[0], classB[1], color='green')
+plt.gca().set_ylim(np.min(dataset[1,:]) - 0.5, np.max(dataset[1, :])+ 0.5)
+plt.gca().set_xlim(np.min(dataset[0,:]) - 0.5, np.max(dataset[0, :])+ 0.5)
 plt.show()
 
 
@@ -61,10 +63,7 @@ for i in range(iterations):
     datapoint = dataset[:, index]
     results = np.dot(W, datapoint)
 
-    error = results - targets[index, 0]
-    errors.append(np.mean(np.square(error)))
-
-    # errors.append(np.sum(np.power(np.asmatrix(W.T @ dataset).T - targets, 2)))
+    errors.append(np.sum(np.power(np.asmatrix(W.T @ dataset).T - targets, 2)) / dataset.shape[1])
 
     classification = 1 if results >= 0 else 0
     true_class = targets[index, 0]
@@ -81,15 +80,17 @@ print(errors)
 
 print(np.sum(all_results == targets.reshape(-1)))
 
-x = np.linspace(-1, 1, 100)
-y = W[0] / W[1] * x + W[2] / W[1]
+x = np.linspace(-100, 100, 100)
+y = W[0]/W[1] * x + W[2] / W[1]
 
 plt.plot(x, y)
-plt.scatter(classA[0], classA[1], color="red")
-plt.scatter(classB[0], classB[1], color="green")
+plt.scatter(classA[0], classA[1], color='red')
+plt.scatter(classB[0], classB[1], color='green')
+plt.gca().set_ylim(np.min(dataset[1,:]) - 0.5, np.max(dataset[1, :])+ 0.5)
+plt.gca().set_xlim(np.min(dataset[0,:]) - 0.5, np.max(dataset[0, :])+ 0.5)
 plt.show()
 
 plt.plot(list(range(iterations)), errors)
-plt.ylabel("Mean Square error")
-plt.xlabel("Iterations")
+plt.ylabel('Mean square error')
+plt.xlabel('Iterations')
 plt.show()
