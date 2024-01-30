@@ -12,6 +12,16 @@ class DoubleLayerNN:
         self.learning_rate = learning_rate
 
         
+    def predict(self, X):
+        H_1 = self.W_hidden @ X
+        A_1 = self.activation(H_1)
+        Y_1 = self.W_output @ A_1
+        O = self.activation(Y_1)
+
+        O[O >= 0] = 1
+        O[O < 0] = -1
+
+        return O
 
     def forward_pass(self, X):
         H_1 = self.W_hidden @ X
@@ -27,7 +37,7 @@ class DoubleLayerNN:
         assert Y.shape[1] == X.shape[1], 'dimensions of input and output do not match up'
 
         mse = []
-        for i in iterations:
+        for i in range(iterations):
             # Forward pass
             H_1, A_1, Y_1, O = self.forward_pass(X)
             # Backwards pass
@@ -40,7 +50,6 @@ class DoubleLayerNN:
             mse.append(current_mse)
 
         return mse
-            
 
     def compute_gradients(self, A_1, O, X, T):
         dA_output = (O - T) * self.sigmoid_derivative(O)
@@ -51,9 +60,9 @@ class DoubleLayerNN:
 
         return dW_hidden, dW_output
     
-
+ 
     def calculate_mse(self, targets, predictions):
-        return np.sum(1/targets.shape * (predictions - targets)**2)
+        return np.sum(1/targets.shape[1] * (predictions - targets)**2)
 
 
 
