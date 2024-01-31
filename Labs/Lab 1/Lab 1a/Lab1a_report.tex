@@ -93,8 +93,6 @@ The decision boundary passes through origo regardless if it is not the optimal s
     \caption{Mean square error comparison of online and sequential learning}
     \label{fig:DeltaRule-NoBias}
 \end{figure}
-
-
 \subsection{Classification of data that are not linearly separable}
 \textbf{Perceptron training:} We created a dataset that is not linearly separable by using the same method as in the assignments above, moving the means of the two clusters closer together. First we tried fitting the single layer Perceptron using the Percepton learning algorithm. We expected that this would not work since it is only guaranteed that it converges if the dataset is linearly separable. Our simulations confirmed this. We tried fitting this Perceptron using the Perceptron learning rule. We calculated the mean square error in the same way as is done when using the Delta learning to get a glimpse into the error of the model. The model does not converge.
 
@@ -148,7 +146,8 @@ The training error never reaches a point where it is stable. This makes sense si
     \end{subfigure}
     \caption{Decision boundary and MSE using the delta rule}
     \label{fig:6}
-\end{figure}
+\end{figure}\\
+
 We created another kind of dataset that is not linearly separable. It was created in such a way that the data belonging to one of the classes was generated the same way as before, i.e. a multivariate Gaussian with a single mean and variance. The other class was created in such a way that half of the data points belonging to that class were generated using the mean $mA$ and the other half generated using the mean $-mA$. We then trained the perceptron using the delta learning rule and obtained the decision boundary shown in figure \ref{fig:new-dataset}. We can see that the delta learning rule does converge but the mean square error is a lot higher than for the previous data sets. And the accuracy obtained on this data set is 0.775
 \begin{figure}[htb]
     \centering
@@ -167,17 +166,13 @@ We created another kind of dataset that is not linearly separable. It was create
     \label{fig:8}
 \end{figure}
 
-We then tried a few ways to exclude data from the set of data that the model is trained on. We used the data that was left as unseen data to test the accuracy. The scenarios are the following:
+\textbf{Excluding data:} We then tried a few ways to exclude data from the set of data that the model is trained on. The decision boundaries obtained for each of the scenarios can be seen in figure \ref{fig:9}. We used the data that was left as unseen data to test the accuracy. The scenarios are the following:
 \begin{enumerate}
     \item Random 25\% from each class
     \item Random 50\% from class A
     \item Random 50\% from class B
-    \item 20\% from a subset of classA for which classA(1,:)<0 and 80\% from a
-subset of classA for which classA(1,:)>0
+    \item 20\% from a subset of classA for which classA$(1,:)<0$ and 80\% from a subset of classA for which classA$(1,:)>0$
 \end{enumerate}
-
-The decision boundaries obtained for each of these scenarios can be seen in figure \ref{fig:9}.
-
 \begin{figure}[htb]
     \centering
     \begin{subfigure}{0.4\textwidth}
@@ -205,22 +200,18 @@ The decision boundaries obtained for each of these scenarios can be seen in figu
     \caption{Decision boundaries with different data removed}
     \label{fig:9}
 \end{figure}
-
-The accuracy of the training data in scenario 1 was 81\% for class A and 81\% for class B. Which is not much worse than when none of the data was removed. The accuracy on the test data was slightly worse but not significantly or 80\% for class A and 72\% for class B. This makes sense since the data that is removed before training is removed uniformly from each class so the 
-\\
-Scenario 2 gave us much more interesting results. The accuracy on the training set was only 0.36 for class A and 0.93 for class B. The accuracy for the test set was 28\% for class A. Since the training set is unbalanced the wrongly classified points in class A do not contribute as much to the loss function that we are minimizing. Therefore the accuracy is much lower for class A.
-\\
-Scenario 3 was very similar to scenario 2 but the other way around. The perceptron classified 97\% of the points in class A correctly but only 28\% of the test set points in class B.\\
-We found scenario 4 to be the most interesting one. The training accuracy was 76\% for class A and 96\% for class B. But the test accuracy was only 18\% for class A. since we removed most of the points in the right cluster of points belonging to class A and only a few from the left cluster, the perceptron benefits from classifying more points from class B correctly. As can be seen in the figure above the classification boundary is a bit to the right of the center of cluster B.
-
+The accuracy of the training data in scenario 1 was 81\% for class A and 81\% for class B. The accuracy on the test data was 80\% for class A and 72\% for class B. This shows some form of generalization \\
+\\Scenario 2 had interesting results. The accuracy on the training set was 36\% for class A and 93\% for class B. The accuracy on the test set was 28\% for class A. The training set is unbalanced and the wrongly classified points in class A do not affect the loss function which the delta function minimizes. Therefore accuracy is lower for class A.\\
+\\Scenario 3 was very similar to scenario 2 but the other way around. The perceptron classified 97\% of the points in class A correctly but only 28\% of the test set points in class B.\\
+\\We found scenario 4 to be the most interesting one. The training accuracy was 76\% for class A and 96\% for class B. But the test accuracy was only 18\% for class A. Since we removed most of the points in the right cluster of points belonging to class A and only a few from the left cluster, the perceptron benefits from classifying more points from class B correctly.
 \section{Final remarks} 
 In this lab we implement the theoretical concepts practically. A single perception was created and trained using two learning algorithms being delta rule and perception training. What we learned was:
 \begin{itemize}
-    \item The bias term matters. Removing it affects the decision significantly and can decrease the performance of the perception
+    \item The bias term matters. Removing it affects the decision boundary significantly and can decrease the performance of the perception.
     \item Initialization matters. We had to find different learning rules and continuously asked ourselves \textit{is this result reasonable?} Many times it was due to the learning rate being too high or low, too few iterations and other stuff that mattered. 
     \item Delta rule in most cases seems to be the better option. It produces a better decision boundary, converges somewhat faster than perception learning and generalizes better. 
-    \item Sequential versus batch should not matter much when dealing with small datasets. From our findings on this lab, we did not notice a significant difference in terms of results other than the iterations were much higher for sequential. For large datasets, batch would have speed up computations significantly. 
-\end{itemize}
+    \item Sequential versus batch should not matter much when dealing with small datasets. We did not notice a significant difference in terms of results other than the iterations were much higher for sequential. For large datasets, batch would have speed up computations significantly. 
+    \item Which data points you use for training and testing matters. If you have "too much" of point A compared to B then you'll notice overfitting on  point A in your test data. \end{itemize}
 
 
 \end{document}
