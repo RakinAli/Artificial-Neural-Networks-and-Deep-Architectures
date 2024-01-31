@@ -4,6 +4,7 @@
 \usepackage[latin1]{inputenc}
 \usepackage{amssymb}
 \usepackage{framed}
+\usepackage{graphicx} 
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{3ex}
@@ -30,24 +31,33 @@ The major objectives in this assignment was
 \end{itemize}
 The scope of this assignment are the instructions that were given excluding all non-mandatory tasks. The limitations was that all data were supervised and only one hidden layer was created. We did as the instructions and did not try different activation functions or making the MLP deeper. 
 \section{Methods}
-Most of the lab instructions were conducted twice in order to check if the results were reasonable but also so that each of us had gain a better theoretical foundation of the assignments. We discussed and had to ask ourselves \textit{is this result reasonable or is there a mistake in the code} and several times there were a few mistakes which were fixed. The amount of hidden nodes was modified together with the learning rate. What was discovered was that as long as there were more than one hidden node, the model achieved good results however more nodes resulted in a more complex boundary. 
-\begin{figure}
-    \centering
-    \includegraphics{}
-    \caption{Caption}
-    \label{fig:enter-label}
-\end{figure}
+Most of the lab instructions were conducted twice in order to check if the results were reasonable but also so that each of us had gain a better theoretical foundation of the assignments. We discussed and had to ask ourselves \textit{is this result reasonable or is there a mistake in the code} and several times there were a few mistakes which were fixed. 
 
 
 \section{Results and discussion}
 \subsection{Classification and regression with a two-layer perceptron \textit{(ca.2 pages)}}
-\textbf{Classification of linearly non-separable data:} For this assignment linearly non-separable data was generated. In the first part of the number of hidden nodes in the hidden layer was modified in order to study the performan
+\textbf{Classification of linearly non-separable data:} For this assignment linearly non-separable data was generated. In the first part of the assignment the amount of hidden nodes was modified together with the learning rate. What was discovered was that as long as there were more than one hidden node, the model achieved good results however more nodes resulted in a more complex boundary. Below are figure \ref{fig:1Hidden} which contains one hidden neuron and figure \ref{fig:15Hidden} which contains 15 hidden neurons. This could be due to overfitting which is why a generalization check was conducted.
 
-%\subsubsection{The encoder problem}
-%\textit{Here you do not really need any illustrations, this could be a very short section reporting on your experiments in line with the assignment questions.}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=10cm]{Labs/Lab 1/Lab 1b/Figure/1Hiddenlayer.png}
+    \caption{Results of one hidden neuron}
+    \label{fig:1Hidden}
+\end{figure}
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=10cm]{Labs/Lab 1/Lab 1b/Figure/15HiddenLayer.png}
+    \caption{Results of 15 hidden neurons}
+    \label{fig:15Hidden}
+\end{figure}
+\textbf{Generalization check:}
+In this check we generated three scenarios. In the first one we subsample 25\% from each class randomly and train while the rest is for validation. In the second one we subsample 50\% for training and the rest for validation. In the third one we subsample 20\% from a subset of class A which is less than 1 and 80\% from a subset of a class where. class A is more than 0. \\
+\\ What was discovered was that that was a overall low generalization error for scenario 1 and 2 if the hidden nodes were more than 1. A generalization error was noticed on most of the networks on scenario 3 however surprisingly they converged. The speed of their convergence had to do with how many hidden nodes there were. 
+
 
 \subsubsection{Function approximation}
-\textit{This subsection requires plots to reflect intuitive visual interpretation of the results. Make sure that you condense information and avoid any excessive plotting. Here you might also need to incorporate some illustration of the network's generalisation performance or use a table to systematically report the results requested in the assignment.}
+\textit{This subsection requires plots to reflect intuitive visual interpretation of the results. Make sure that you condense information and avoid any excessive plotting. Here you might also need to incorporate some illustration of the network's generalization performance or use a table to systematically report the results requested in the assignment.}
 
 \subsection{Multi-layer perceptron for time series prediction \textit{(ca.3 pages)}}
 
