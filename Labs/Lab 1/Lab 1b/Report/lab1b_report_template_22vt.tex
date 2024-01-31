@@ -5,6 +5,8 @@
 \usepackage{amssymb}
 \usepackage{framed}
 \usepackage{graphicx} 
+\usepackage{subcaption}
+
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{3ex}
@@ -53,8 +55,26 @@ Most of the lab instructions were conducted twice in order to check if the resul
 \end{figure}
 \textbf{Generalization check:}
 In this check we generated three scenarios. In the first one we subsample 25\% from each class randomly and train while the rest is for validation. In the second one we subsample 50\% for training and the rest for validation. In the third one we subsample 20\% from a subset of class A which is less than 1 and 80\% from a subset of a class where. class A is more than 0. \\
-\\ What was discovered was that that was a overall low generalization error for scenario 1 and 2 if the hidden nodes were more than 1. A generalization error was noticed on most of the networks on scenario 3 however surprisingly they converged. The speed of their convergence had to do with how many hidden nodes there were. 
-
+\\ What was discovered was that that was a overall low generalization error for scenario 1 and 2 if the hidden nodes were more than 1. A generalization error was noticed on most of the networks on scenario 3 however surprisingly they converged. The speed of their convergence had to do with how many hidden nodes there were. They were all trained with a learning rate of 0.0005 as and epochs of 15000 as these numbers allowed us to see the differences in their convergence more easier. Figure \ref{fig: 5 hidden 3 scenarios} is with 5 hidden neurons and Figure \ref{fig: 30 hidden 3 scenarios} is with 30 hidden neurons. 
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1b/Figure/3.1.1_5 hidden nodes.png}
+        \caption{5 Hidden neurons for each scenario}
+        \label{fig: 5 hidden 3 scenarios}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Labs/Lab 1/Lab 1b/Figure/3.1.1_30 hidden nodes.png}
+        \caption{30 Hidden Neurons for each scenario}
+        \label{fig: 30 hidden 3 scenarios}
+    \end{subfigure}
+    \caption{Comparative scenarios with different numbers of hidden neurons}
+    \label{fig: comparative scenarios}
+\end{figure}\\
+\textbf{Regarding Sequential versus batch Learning}: We didn't notice much of a difference in terms in convergence other than sequential made "more changes" per epoch than batch learning. The figure has been purposefully omitte.d  
 
 \subsubsection{Function approximation}
 \textit{This subsection requires plots to reflect intuitive visual interpretation of the results. Make sure that you condense information and avoid any excessive plotting. Here you might also need to incorporate some illustration of the network's generalization performance or use a table to systematically report the results requested in the assignment.}
