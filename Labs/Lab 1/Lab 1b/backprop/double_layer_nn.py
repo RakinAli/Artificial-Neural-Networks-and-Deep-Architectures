@@ -32,11 +32,12 @@ class DoubleLayerNN:
         return H_1, A_1, Y_1, O
 
 
-    def fit_data(self, X, Y, iterations=10000):
+    def fit_data(self, X, Y, iterations=10000, val_X=None, val_Y=None):
         assert X.shape[0] == self.input_nodes, 'dimension of input data is incorrect'
         assert Y.shape[1] == X.shape[1], 'dimensions of input and output do not match up'
 
-        mse = []
+        train_mse = []
+        val_mse = []
         for i in range(iterations):
             # Forward pass
             H_1, A_1, Y_1, O = self.forward_pass(X)
@@ -47,9 +48,17 @@ class DoubleLayerNN:
             self.W_output = self.W_output - self.learning_rate * dW_output
             # calculate mse
             current_mse = self.calculate_mse(Y, O)
-            mse.append(current_mse)
+            train_mse.append(current_mse)
+            # calculate mse for validation_data
+            if not val_X is None:
+                O_val = self.predict(val_X)
+                current_val_mse = self.calculate_mse(val_Y, O_val)
+                val_mse.append(current_val_mse) 
 
-        return mse
+        if val_X is None:
+            return train_mse
+
+        return train_mse, val_mse
 
     def compute_gradients(self, A_1, O, X, T):
         dA_output = (O - T) * self.sigmoid_derivative(O)
@@ -63,13 +72,11 @@ class DoubleLayerNN:
 
     def accuracy(self, X, Y):
         predictions = self.predict(X)
-        print (predictions == Y)
         return np.sum(Y == predictions) / X.shape[1]
     
  
     def calculate_mse(self, targets, predictions):
         return np.sum(1/targets.shape[1] * (predictions - targets)**2)
-
 
 
     def activation(self, Y):

@@ -6,19 +6,14 @@ from data_generator import data_generator
 import matplotlib.pyplot as plt
 from backprop.double_layer_nn import DoubleLayerNN
 
+# Assignment 3.1.1.1
 # Number of hidden nodes
-hidden_nodes = 1
-
-
+hidden_nodes = 4
 dg = data_generator(mA=[1, 0.3], mB=[0, -0.1], sigmaA=0.2, sigmaB=0.3)
 
 dataset, targets = dg.generate_data_unseparable(100, 100)
-
-dg.plot_data(dataset, targets)
-
 dataset = dataset.T
 targets = targets.T
-
 # Add bias term to dataset
 dataset = np.vstack((dataset, np.ones(dataset.shape[1])))
 
@@ -40,9 +35,34 @@ blue = dataset1[:, predictions[0, :] < 0]
 plt.scatter(red[0], red[1], color='red')
 plt.scatter(blue[0], blue[1], color='blue')
 plt.scatter(dataset[0][targets[0] == 1], dataset[1][targets[0] == 1], color='green')
-plt.scatter(dataset[0][targets[0] == 0], dataset[1][targets[0] == 0], color='orange')
+plt.scatter(dataset[0][targets[0] == -1], dataset[1][targets[0] == -1], color='orange')
 
 plt.show()
 
 plt.plot(mse)
+plt.show()
+
+
+# Split data
+train_data, train_targets, validation_data, validation_targets = dg.split_data(dataset, targets, lambda x: x==1, lambda x: x==-1, 0.75, 0.254)
+model = DoubleLayerNN()
+
+train_mse, val_mse = model.fit_data(train_data, train_targets, val_X=validation_data, val_Y=validation_targets)
+
+x1_min, x1_max = dataset[0,:].min() - 1, dataset[0, :].max() + 1
+x2_min, x2_max = dataset[1,:].min() - 1, dataset[1, :].max() + 1
+
+x1_mesh, x2_mesh = np.meshgrid(np.arange(x1_min, x1_max, 0.1), np.arange(x2_min, x2_max, 0.1))
+grid_data = np.c_[x1_mesh.ravel(), x2_mesh.ravel(), np.ones(len(x2_mesh.ravel()))].T
+
+Z = model.predict(grid_data)
+print(Z.shape)
+print (Z.reshape(x1_mesh.shape))
+
+plt.contourf(x1_mesh, x2_mesh, Z.reshape(x1_mesh.shape), cmap=plt.cm.Paired, alpha=0.8)
+plt.scatter(train_data[0], train_data[1])
+plt.show()
+
+plt.plot(train_mse, color='blue')
+plt.plot(val_mse, color='red')
 plt.show()

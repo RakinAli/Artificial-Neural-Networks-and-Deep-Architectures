@@ -20,6 +20,11 @@ class data_generator:
         assert len(a) == len(b)
         permutation = np.random.permutation(len(a))
         return a[permutation], b[permutation]
+    
+    def simultaneous_shuffle_columns(self, a, b):
+        assert a.shape[1] == b.shape[1]
+        permutation = np.random.permutation(a.shape[1])
+        return a[:, permutation], b[:, permutation]
 
     def generate_class_data(self, samplesA, samplesB):
         # Initialize arrays for class A and B
@@ -90,7 +95,7 @@ class data_generator:
         classA = np.zeros((2, samplesA))
         classB = np.zeros((2, samplesB))
         targetA = np.ones((samplesA, 1))
-        targetB = np.zeros((samplesB, 1))
+        targetB = -np.ones((samplesB, 1))
 
         # Generate data for class A
         classA[0, 0:int(samplesA / 2)] = np.random.normal(loc=-self.mA[0], scale=self.sigmaA, size=int(samplesA / 2))
@@ -129,6 +134,50 @@ class data_generator:
         plt.title("Data Distribution")
         plt.axis("equal")
         plt.show()
+
+    
+    def split_data(self, data, targets, lambda_class1, lambda_class2, ratio_class1_val, ratio_class2_val):
+        # filter out the classes
+        class_1_data = np.array([data[:, x] for x in range(targets.shape[1]) if lambda_class1(targets[0, x])]).T
+        class_1_targets = np.array([targets[:, x] for x in range(targets.shape[1]) if lambda_class1(targets[0, x])]).T
+        class_2_data = np.array([data[:, x] for x in range(targets.shape[1]) if lambda_class2(targets[0, x])]).T
+        class_2_targets = np.array([targets[:, x] for x in range(targets.shape[1]) if lambda_class2(targets[0, x])]).T
+
+        class_1_data, class_1_targets = self.simultaneous_shuffle_columns(class_1_data, class_1_targets)
+        class_2_data, class_2_targets = self.simultaneous_shuffle_columns(class_2_data, class_2_targets)
+
+        nr_in_class_1_val = int(ratio_class1_val * class_1_data.shape[1])
+        nr_in_class_2_val = int(ratio_class2_val * class_2_data.shape[1])
+
+        # split data        
+        class_1_val_data = class_1_data[:, 0:nr_in_class_1_val]
+        class_1_train_data = class_1_data[:, nr_in_class_1_val:]
+        class_1_val_targets = class_1_targets[:, 0:nr_in_class_1_val]
+        class_1_train_targets = class_1_targets[:, nr_in_class_1_val:]
+
+        class_2_val_data = class_2_data[:, 0:nr_in_class_2_val]
+        class_2_train_data = class_2_data[:, nr_in_class_2_val:]
+        class_2_val_targets = class_2_targets[:, 0:nr_in_class_2_val]
+        class_2_train_targets = class_2_targets[:, nr_in_class_2_val:]
+
+        # Put the two classes together
+        validation_data = np.c_[class_1_val_data, class_2_val_data]
+        validation_targets = np.c_[class_1_val_targets, class_2_val_targets]
+
+        train_data = np.c_[class_1_train_data, class_2_train_data]
+        train_targets = np.c_[class_1_train_targets, class_2_train_targets]
+
+        return train_data, train_targets, validation_data, validation_targets
+
+
+
+        
+
+
+
+    	
+
+
 
 
 """    
