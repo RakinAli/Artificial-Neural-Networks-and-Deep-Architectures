@@ -60,6 +60,12 @@ class DoubleLayerNN:
 
         return dW_hidden, dW_output
     
+
+    def accuracy(self, X, Y):
+        predictions = self.predict(X)
+        print (predictions == Y)
+        return np.sum(Y == predictions) / X.shape[1]
+    
  
     def calculate_mse(self, targets, predictions):
         return np.sum(1/targets.shape[1] * (predictions - targets)**2)

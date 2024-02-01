@@ -83,6 +83,31 @@ class data_generator:
         )
 
         return (training_data, training_targets), (validation_data, validation_targets)
+    
+    # Method to create linearly unseparable data
+    def generate_data_unseparable(self, samplesA, samplesB):
+        # Initialize arrays for class A and B
+        classA = np.zeros((2, samplesA))
+        classB = np.zeros((2, samplesB))
+        targetA = np.ones((samplesA, 1))
+        targetB = np.zeros((samplesB, 1))
+
+        # Generate data for class A
+        classA[0, 0:int(samplesA / 2)] = np.random.normal(loc=-self.mA[0], scale=self.sigmaA, size=int(samplesA / 2))
+        classA[0, int(samplesA / 2):] = np.random.normal(loc=self.mA[0], scale=self.sigmaA, size=int(samplesA / 2))
+        classA[1] = np.random.normal(loc=self.mA[1], scale=self.sigmaA, size=samplesA)
+
+        # Generate data for class B
+        classB[0] = np.random.normal(loc=self.mB[0], scale=self.sigmaB, size=samplesB)
+        classB[1] = np.random.normal(loc=self.mB[1], scale=self.sigmaB, size=samplesB)
+
+        # Combine the data from both classes
+        dataset = np.concatenate((classA.T, classB.T))
+        targets = np.concatenate((targetA, targetB))
+
+        # Shuffle the combined dataset and targets
+        dataset, targets = self.simultaneous_shuffle(dataset, targets)
+        return dataset, targets
 
     # Method to plot the data
     def plot_data(self, dataset, targets):
