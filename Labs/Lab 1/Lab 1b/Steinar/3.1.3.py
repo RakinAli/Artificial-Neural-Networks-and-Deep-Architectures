@@ -22,8 +22,28 @@ plt.show()
 dataset = np.c_[x_mesh.ravel(), y_mesh.ravel(), np.ones(len(x_mesh.ravel()))].T
 targets = np.array([Z])
 
-model = DoubleLayerNN(nr_of_hidden_nodes=10, learning_rate=0.0001)
-mse = model.fit_data(dataset, targets, iterations=10000)
+
+for h in range(1, 26, 3):
+    model = DoubleLayerNN(nr_of_hidden_nodes=h, learning_rate=0.0001)
+    
+    train_data_indices = np.random.choice(dataset.shape[1], int(0.8 * dataset.shape[1]), replace=False)
+    train_data = dataset[:, train_data_indices]
+    train_targets = targets[:, train_data_indices]
+    mse = model.fit_data(train_data, train_targets, iterations=10000)
+    predictions = model.predict(dataset)
+
+    # Plot the data
+
+    # plot mse:
+    plt.plot(mse)
+    plt.xlabel('epoch')
+    plt.ylabel('MSE')
+    plt.title('Training error for MLP with ' + str(h) + ' hidden neurons')
+    plt.savefig('./plots/train-error-' + str(h) + '-hidden-neurons.png')
+    plt.clf()
+    plt.cla()
+
+ 
 
 #sklearn_model = MLPRegressor(solver='sgd', hidden_layer_sizes=(10), activation='logistic', momentum=0, batch_size=len(dataset.T))
 #sklearn_model.fit(dataset.T, targets.T)
