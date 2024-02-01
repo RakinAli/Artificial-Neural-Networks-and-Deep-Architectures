@@ -19,7 +19,7 @@
   {\huge Short report on lab assignment 1b\\[1ex]}
   {\Large Learning with backpropagation and generalisation in multi-layer perceptrons\\}
   \vspace{8mm}  
-  {\Large Rakin Ali , Steinar Logi and Hasan \textbf{EFTERNAMN}\\}
+  {\Large Rakin Ali , Steinar Logi Geirsson and Hasan \textbf{EFTERNAMN}\\}
   \vspace{4mm}
   {\large January 31 2024 }
 \end{center}
@@ -55,7 +55,7 @@ Most of the lab instructions were conducted twice in order to check if the resul
 \end{figure}
 \textbf{Generalization check:}
 In this check we generated three scenarios. In the first one we subsample 25\% from each class randomly and train while the rest is for validation. In the second one we subsample 50\% for training and the rest for validation. In the third one we subsample 20\% from a subset of class A which is less than 1 and 80\% from a subset of a class where. class A is more than 0. \\
-\\ What was discovered was that that was a overall low generalization error for scenario 1 and 2 if the hidden nodes were more than 1. A generalization error was noticed on most of the networks on scenario 3 however surprisingly they converged. The speed of their convergence had to do with how many hidden nodes there were. They were all trained with a learning rate of 0.0005 as and epochs of 15000 as these numbers allowed us to see the differences in their convergence more easier. Figure \ref{fig: 5 hidden 3 scenarios} is with 5 hidden neurons and Figure \ref{fig: 30 hidden 3 scenarios} is with 30 hidden neurons. 
+\\ What was discovered was that that was a overall low generalization error for scenario 1 and 2 if the hidden nodes were more than 1. A generalization error was noticed on most of the networks on scenario 3 however surprisingly they converged. The speed of their convergence had to do with how many hidden nodes there were. They were all trained with a learning rate of 0.0005 as and epochs of 15000 as these numbers allowed us to see the differences in their convergence more easier. Figure \ref{fig: 5 hidden 3 scenarios} is with 5 hidden neurons and Figure \ref{fig: 30 hidden 3 scenarios} is with 30 hidden neurons. The decision bound is drawn on the entire dataset. 
 \begin{figure}[!htb]
     \centering
     \begin{subfigure}[b]{0.48\textwidth}
@@ -74,16 +74,71 @@ In this check we generated three scenarios. In the first one we subsample 25\% f
     \caption{Comparative scenarios with different numbers of hidden neurons}
     \label{fig: comparative scenarios}
 \end{figure}\\
-\textbf{Regarding Sequential versus batch Learning}: We didn't notice much of a difference in terms in convergence other than sequential made "more changes" per epoch than batch learning. The figure has been purposefully omitte.d  
+\textbf{Regarding Sequential versus batch Learning}: We didn't notice much of a difference in terms in convergence other than sequential made "more changes" per epoch than batch learning. That figure has been purposefully omitted in order to stay within the 8 page limit.\\
+\textbf{Function approximation of a Gaussian function:} In this part of the assignment we performed regression instead of classification. The purpose of the assignment was to see how well a multi layer perceptron can approximate a given function. The function we approximated was the well known bell shaped Gauss function:
+$$
+f(x, y) = e^{-(x^2+y^2)/10} - 0.5
+$$
+The bell function takes two variables as inputs and returns a number. The function can be plotted in three dimensional space where the x and y axis represent the inputs and the z-axis represents the output of the function. We plotted this with the plot\_surface function that is available in the python package matplotlib. The function can be seen in figure \ref{fig:gauss-function}
 
-\subsubsection{Function approximation}
-\textit{This subsection requires plots to reflect intuitive visual interpretation of the results. Make sure that you condense information and avoid any excessive plotting. Here you might also need to incorporate some illustration of the network's generalization performance or use a table to systematically report the results requested in the assignment.}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Labs/Lab 1/Lab 1b/Figure/Figure_1.png}
+    \caption{The bell shaped gauss function}
+    \label{fig:gauss-function}
+\end{figure}
+
+We created a dataset by creating a mesh of x and y values in the interval -0.5 to 0.5. We used 80\% of the dataset as training data and then tested the model using the whole dataset. We varied the number of neurons in the hidden layer from 1-25 with a step size of 3, that is we used a model containing 1, 4, 7 all the way up to 25 neurons in the hidden layer. When training the network we used batch gradient descent with momentum and trained all of the networks for 10000 epochs. We used mean square error as the loss function. The mean square error for each of these models can be seen in table \ref{table:mse}:
+
+\begin{table}
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+         \# of hidden neurons & Mean square error \\
+         \hline
+         1 & 0.0001086\\
+         \hline 
+         4 & $5.96127*10^{-7}$\\
+         \hline
+         7 & $1.06032*10^{-5}$\\
+         \hline
+         10 & $2.01543*10^{-5}$\\
+         \hline
+         13 & $1.85068*10^{-6}$\\
+         \hline
+         16 & $1.78984*10^{-5}$\\
+         \hline
+         19 & $4.57150*10^{-5}$\\
+         \hline
+         22 & $1.49880*10^{-5}$\\
+         \hline
+         25 & $$\\
+         \hline
+    \end{tabular}
+    \caption{Mean square errors as function of hidden neurons}
+    \label{table:mse}
+    \end{center}
+\end{table}
+
+
+
 
 \subsection{Multi-layer perceptron for time series prediction \textit{(ca.3 pages)}}
 
 \textit{Here you do not have to introduce the problem or define Mackey-Glass time series, as you should focus on the results. You could divide them into two parts as the following two suggested subsections but you might as well keep your story under the main heading of this part of the assignment. Importantly, always clearly state what network architecture you use, crucially with the number of hidden nodes, systematically report average results with various manipulations (regularisation etc.) and pay attention to differences between training, validation and test errors. Illustrating the outcome of your network predictions along with the original chaotic time series can also be very helpful. Finally, since you compare two- and three-layer architectures, make sure that you do not jump to any conclusions based on a small number of simulations unless you have statistically convincing evidence (when you comare the mean performance measures, their second moment is also relevant). In this part it may be particularly desirable to rely on tables.}
 
 \subsubsection{Three-layer perceptron for time series prediction - model selection, validation}
+
+We created three subsets in this part of the assignment. The first one is the training subset, and the two others are validation and testing tests. The dataset consists of 1200 points: 800 for training, 200 for validation, and 200 for testing. The last 200 points were used in the end to measure how the best and the worst network design performance.
+
+An illustration of how the data looks is an the figure below. 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.5\textwidth]{Labs/Lab 1/Lab 1b/Part2/figure/}
+    \caption{the data}
+    \label{fig:gauss-function}
+\end{figure}
+We used TensorFlow, NumPy, and python Matplotlib to create the network. 
 
 \subsubsection{Three-layer perceptron for noisy time series prediction with penalty regularisation}
 
