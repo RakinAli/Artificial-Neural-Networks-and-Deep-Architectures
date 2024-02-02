@@ -297,11 +297,11 @@ In the design with three nodes, we see that the validation error decreased when 
 \section{Final remarks }
 In this lab we implemented the theoretical concepts from the lectures practically. Several Two-and-three- leveled Multilayered Perceptrons were created and trained using the back propagation algorithm. We learned that:
 \begin{itemize}
-    \item The amount of hidden neurons in the hidden layers matter however one cannot assume that more neurons means a better network. The amount of hidden neurons in the hidden layer/s is dependent on the dataset.
-    \item Unlike Perceptron learning rule, generalized delta rule with multiple neurons are able to handle nearly non-separable data quite well. 
-    \item Multilayed perceptrons in our observation are good at approximating functions. When approximating the Gaussian function, most of the architures approximated the function well.
-    \item Multilayeed Perceptrons are able to handle time-series forecasting and could be used for it. Relatively simple models which did not take much time to build on our local computers produced decent results when predicting Mackey-Glass series.
-    \item Weight initialization matters. The architectures performance is somewhat stochastic depending on the initialization and this affects the time to converge to a final solution and how well the model performs. This is somewhat that needs to be taken into consideration when building and testing the model.
-    \item \textbf{I NEED A COMMMENT REGARDING WEIGHT DECAY AND PENALTY REGULSATION!! @STEINAR OR @HASSAN}
+    \item The amount of hidden neurons in the hidden layers matter however one cannot assume that more neurons means a better generalisation. The appropriate amount of hidden neurons in the hidden layer/s is dependent on the dataset.
+    \item Unlike Perceptron learning rule, generalized delta rule with multiple neurons are able to handle linearly non-separable data quite well. 
+\item Multilayered perceptrons in our observation are good at approximating functions. When approximating the Gaussian function, most of the architectures approximated the function well.
+    \item Multilayered Perceptrons are able to handle time-series forecasting and could be used for it. Relatively simple models which did not take much time to build on our local computers produced decent results when predicting Mackey-Glass series.
+    \item Weight initialization matters. The architectures performance is somewhat stochastic depending on the initialization and this affects the time to converge to a final solution and how well the model performs. This is needs to be taken into consideration when building and testing the model.
+\item When using weight decay regularisation it generally forces the weights to be smaller and helps with generalisation.
 \end{itemize}
 \end{document}
