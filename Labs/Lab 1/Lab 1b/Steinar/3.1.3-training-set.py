@@ -22,14 +22,14 @@ plt.show()
 dataset = np.c_[x_mesh.ravel(), y_mesh.ravel(), np.ones(len(x_mesh.ravel()))].T
 targets = np.array([Z])
 
-
-for h in range(1, 26, 3):
-    model = DoubleLayerNN(nr_of_hidden_nodes=h, learning_rate=0.0001)
+hidden_nodes = 4
+for train_data_ratio in np.arange(0.8, 0.1, -0.1):
+    model = DoubleLayerNN(nr_of_hidden_nodes=hidden_nodes, learning_rate=0.0001)
     
-    train_data_indices = np.random.choice(dataset.shape[1], int(0.8 * dataset.shape[1]), replace=False)
+    train_data_indices = np.random.choice(dataset.shape[1], int(train_data_ratio * dataset.shape[1]), replace=False)
     train_data = dataset[:, train_data_indices]
     train_targets = targets[:, train_data_indices]
-    mse = model.fit_data(train_data, train_targets, iterations=10000)
+    mse = model.fit_data(train_data, train_targets, iterations=100000)
     predictions = model.predict(dataset)
 
     # Plot the data
@@ -38,8 +38,8 @@ for h in range(1, 26, 3):
     plt.plot(mse)
     plt.xlabel('epoch')
     plt.ylabel('MSE')
-    plt.title('Training error for MLP with ' + str(h) + ' hidden neurons')
-    plt.savefig('./plots/train-error-' + str(h) + '-hidden-neurons.png')
+    plt.title('Training error for MLP trained on ' + str(train_data_ratio) + ' of the data')
+    plt.savefig('./plots/train-error-' + str(train_data_ratio) + '-train-data.png')
     plt.clf()
     plt.cla()
 
@@ -48,12 +48,12 @@ for h in range(1, 26, 3):
     ax.plot_surface(x_mesh, y_mesh, predictions[0].reshape(x_mesh.shape), color='blue', label='predicted function')
     ax.plot_surface(x_mesh, y_mesh, Z.reshape(x_mesh.shape), color='red', label='True function')
     plt.legend()
-    plt.title('MLP with ' + str(h) + ' hidden neurons')
-    plt.savefig('./plots/plots-' + str(h) + '-hidden-neurons.png')
+    plt.title('MLP trained on ' + str(int(train_data_ratio*100)) + "% of the data")
+    plt.savefig('./plots/plots-' + str(train_data_ratio) + '-train-data.png')
     plt.clf()
     plt.cla()
 
-    print ('MSE for ' + str(h) + ' hidden neurons: ' + str(mse[-1]))
+    print ('MSE for ' + str(train_data_ratio) + ' of the data: ' + str(mse[-1]))
 
 
 #sklearn_model = MLPRegressor(solver='sgd', hidden_layer_sizes=(10), activation='logistic', momentum=0, batch_size=len(dataset.T))
