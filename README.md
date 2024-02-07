@@ -5,6 +5,8 @@ DD2437 at KTH
 - Labs
   - [Lab 1]()
   - [Lab 2]()
+  - [Lab 3]()
+  - [Lab 4]()
 - Lectures: <br>
 Contains the lecture slides and the lecture notes.
 
