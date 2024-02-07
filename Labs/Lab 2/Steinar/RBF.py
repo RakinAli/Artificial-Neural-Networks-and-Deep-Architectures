@@ -27,6 +27,35 @@ class RBF_network:
         activations = self.calculate_activations(X)
         self.weights_output = (np.linalg.inv(activations @ activations.T) @ activations @ Y.T).T
 
+    
+    def fit_data_sequential(self, input, targets, epochs=200, lr=0.005):
+        errors = []
+        X = input.copy()
+        Y = targets.copy()
+
+
+        for i in range(epochs * X.shape[1]):
+            if i % X.shape[1] == 0:
+                perm = np.random.permutation(X.shape[1])
+                X = X[:, perm]
+                Y = Y[:, perm]
+
+            batch = np.array([X[:, i % X.shape[1]]])
+            batch_targets = np.array([Y[:, i % X.shape[1]]])
+            
+            activations = self.calculate_activations(batch)
+
+            e =  self.weights_output @ activations  - batch_targets
+
+            delta_w = - activations @ e
+
+            self.weights_output = self.weights_output + lr * delta_w.T
+
+            error = (self.weights_output @ activations - batch_targets) ** 2
+            errors.append(np.sum(error) / X.shape[1])
+
+        return errors
+
 
     def predict(self, X):
         activations = self.calculate_activations(X)

@@ -18,12 +18,19 @@ sin_2x = sin_2x + np.random.normal(scale=0.1,size=sin_2x.shape)# Add noise
 square_x = np.array([1 if np.sin(2*x) >= 0 else -1 for x in X[0]]).reshape((1, -1))
 sin_2x_test = np.sin(2*test_x)
 
-model.fit_data(X, sin_2x)
+errors = model.fit_data_sequential(X, sin_2x, epochs=800, lr=.8)
 
+predictions = model.predict(test_x)
+
+print ('absolute residual error: ', str(np.sum(np.abs(predictions - sin_2x_test)) / predictions.shape[1]))
+
+model.fit_data(X, sin_2x)
 predictions = model.predict(test_x)
 
 print ('absolute residual error: ', str(np.sum(np.abs(predictions - sin_2x_test)) / predictions.shape[1]))
 
 plt.scatter(X[0], sin_2x[0], color='red')
 plt.plot(test_x[0], predictions[0], color='blue')
+plt.show()
+plt.plot(errors)
 plt.show()
