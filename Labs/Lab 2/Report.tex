@@ -1,9 +1,10 @@
 \documentclass[a4paper]{article}
 
-\usepackage[swedish]{babel}
+\usepackage{babel}
 \usepackage[latin1]{inputenc}
 \usepackage{amssymb}
 \usepackage{framed}
+\usepackage{graphicx}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{3ex}
@@ -50,13 +51,13 @@ We performed function approximation with Radial basis function networks. The fun
 \section{Results and discussion - Part II: Self-organising maps \normalsize{\textit{(ca. 2 pages)}}}
 
 \subsection{Topological ordering of animal species}
-In the code we set the initial neighbours to 50, had 1000 epochs and a learning rate of 0.2 as in the instructions. Below 
+In the code we set the initial neighbors to 50, had 1000 epochs and a learning rate of 0.2 as in the instructions. The figure can be seen in \ref{fig:SOM_animals}. The figure makes sense as cat and lion are matched together and a with a closer observation you are able to notice how most insects are grouped together. 
 
-\begin{figure}
+\begin{figure} [htb]
     \centering
-    \includegraphics{lab2}
-    \caption{Caption}
-    \label{fig:enter-label}
+    \includegraphics[width=5cm]{Labs/Lab 2/Results/animal_som.png}
+    \caption{Animals sorted in 100 size nodes}
+    \label{fig:SOM_animals}
 \end{figure}
 
 
