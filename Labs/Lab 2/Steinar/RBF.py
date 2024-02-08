@@ -45,14 +45,15 @@ class RBF_network:
             
             activations = self.calculate_activations(batch)
 
+            #if i % X.shape[1] == 0:
+            error = (self.weights_output @ activations - batch_targets) ** 2
+            errors.append(np.sum(error) / X.shape[1])
+
             e =  self.weights_output @ activations  - batch_targets
 
             delta_w = - activations @ e
 
             self.weights_output = self.weights_output + lr * delta_w.T
-
-            error = (self.weights_output @ activations - batch_targets) ** 2
-            errors.append(np.sum(error) / X.shape[1])
 
         return errors
 
