@@ -24,3 +24,7 @@ Seems to work worse for model 2 with random weights
 
 ## Please compare your optimal RBF network trained in batch mode witha single-hidden-layer perceptron trained with backprop (also in batchmode), which you implemented in the first lab assignment. Please use the same number of hidden units as in the RBF network. The comparison should be made for both functions: sin(2x) and square(2x), only for the noisy case. Please remember that generalisation performance and training time are of greatest interest.
 The RBF network does a much better job, we need much more hidden neurons to be able to approximate the sin_2x function using the single-hidden-layer-perceptron trained with backprop
+
+# 4.1
+# Animals.dat
+Similar animals seem to appear at the same place. That is flies and insects appear close to each other and bigger animals appear closer together.
