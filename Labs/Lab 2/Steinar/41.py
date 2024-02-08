@@ -29,5 +29,13 @@ for i in range(dataset.shape[1]):
     results[index].append(animal_names[0, i])
 
 
-print(results)
+string = ''
+
+for r in results:
+    for n in r:
+        string = string + ', ' + str.strip(n, '\t\n\'') 
+
+print (string)
+
+#print(results)
 

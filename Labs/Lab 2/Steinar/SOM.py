@@ -79,3 +79,97 @@ class SOM:
         closest_index = np.argmin(norms)
         return closest_index
 
+
+class SOM_grid:
+    def __init__(self, grid_size, dim, eta=0.2, eta_n=0.1, alpha=0.8):
+        if not type(grid_size) is tuple:
+            raise TypeError('grid size must be a tuple')
+        
+        self.grid_size = grid_size
+        self.neurons = np.random.uniform(size=(grid_size[0], grid_size[1], dim))
+        self.alpha = alpha
+        self.eta = eta
+        self.eta_n = eta_n
+
+
+    def fit_data(self, data, epochs=20):
+        previous_learning_rate = self.eta
+        previous_learning_rate_n = self.eta_n
+
+        for e in range(epochs):
+            learning_rate = self.calculate_learning_rate(e, epochs, previous_learning_rate)
+            learning_rate_n = self.calculate_learning_rate(e, epochs, previous_learning_rate_n)
+
+            for d in range(data.shape[1]):
+
+                data_point = data[:, d]
+                differences = self.neurons - data_point
+                norms = np.linalg.norm(differences, axis=2)
+
+                closest_index = np.argmin(norms)
+                closest_index = np.unravel_index(closest_index, norms.shape)
+
+                self.update_neurons(closest_index, data_point, learning_rate, learning_rate_n)
+
+            previous_learning_rate = learning_rate
+            previous_learning_rate_n = learning_rate_n
+
+
+    def calculate_learning_rate(self, k, k_max, eta_prev):
+        return self.alpha * eta_prev**(k/k_max)
+
+
+    def update_neurons(self, closest_index, data_point, learning_rate, learning_rate_n):
+        neighbours = self.get_neighbours(closest_index)
+
+        # Update the winning node
+        update_neuron = self.neurons[closest_index]
+        update_neuron = update_neuron - learning_rate*(update_neuron- data_point)
+        self.neurons[closest_index] = update_neuron
+
+        # Update the neighbours
+        for index in neighbours:
+            update_neuron = self.neurons[index]
+            update_neuron = update_neuron - learning_rate_n*(update_neuron- data_point)
+            self.neurons[index] = update_neuron
+
+
+    def get_neighbours(self, index):
+        neighbours = [self.right(index), self.up(index), self.down(index), self.left(index)]
+        neighbours = list(filter(lambda a: a is not None, neighbours))
+
+        return neighbours
+
+
+
+    def right(self, index):
+        x, y = index
+
+        if x + 1 >= self.grid_size[0]:
+            return None
+        
+        return (x + 1, y)
+    
+    def left(self, index):
+        x, y = index
+
+        if x - 1 < 0:
+            return None
+        
+        return (x-1, y)
+    
+    def down(self, index):
+        x, y = index
+
+        if y + 1 >= self.grid_size[1]:
+            return None
+        
+        return (x, y+1)
+
+    def up(self, index):
+        x, y = index
+
+        if y - 1 < 0:
+            return None
+        
+        return (x, y-1)
