@@ -44,9 +44,9 @@ We performed function approximation with Radial basis function networks. The fun
 
 \begin{figure}
     \centering
-    \includegraphics{}
-    \caption{Caption}
-    \label{fig:enter-label}
+    \includegraphics[width=0.4\textwidth]{Labs/Lab 2/Steinar/results/two-functions.png}
+    \caption{The two functions}
+    \label{fig:two-functions}
 \end{figure}
 
 When fitting the radial basis function network to the sine function we discovered that it was enough to use only 4 units to be able to obtain an error below 0.1 and to obtain an error below 0.01 it was enough to use 6 units. When using 4 units we placed them at each minimum and maximum of the sine wave in the interval $[0:2\pi]$. When we used 6 neurons we placed the units at each minimum and maximum and then we placed two neurons at the ends of the interval. \\
@@ -56,10 +56,40 @@ When we fitted the $square(2x)$ function we observed that if we used the $sgn(y)
 
 
 \subsection{Function approximation with noise data}
-In t
+We performed function approximations for $sin(2x)$ and $square(2x)$ using training and testing data subsets containing noise to see how RBF models perform and discover patterns although noise. In addition, we compared the performance of various RBF networks to understand how different parameters can affect the performance of the models. Furthermore, two different approached were implemented to train the RBF networks, the delta rule and the least square
+
+\begin{figure} 
+     \centering
+     \includegraphics[width=0.6\textwidth]{Labs/Lab 2/figures/3.2/MSE_sin(2x)_delta.png}
+     \caption{The MSE error with delta rule implementation}
+     \label{fig:sin(2x)}
+\end{figure}
+
+\begin{figure} 
+     \centering
+     \includegraphics[width=0.6\textwidth]{Labs/Lab 2/figures/3.2/MSE_sin(2x)_least.png}
+     \caption{The MSE error with least square implementation}
+     \label{fig:sin(2x)}
+\end{figure}
+
+Increasing the network's nodes improves the generalization performance, which can be seen in both implementations. However, a too low width, such as 0.2, will give low accuracy.
+A higher width than 1 seems only to worsen the generalization performance in the delta rule implementation.\ref{fig:sin(2x)} 
+
+
+Choosing 
+
+
+
+
 
 \subsection{Competitive learning for RBF unit initialisation\\ \normalsize{\textit{(ca. 1 page)}}}
 \textit{Please refer first to the results in the previous section, i.e. those obtained without any automated initialisation. Then in the next subsection focus on two-dimensional regression with RBF networks.}
+
+In this part of the assignment we used competitive learning to initialize the weights. We tried using competitive learning to initialize the weights used in the RBF network that was trained on the training set from the $sin(2x)$ function. The weights for this training set are of course one dimensional. We can therefore visualize the weights by drawing the output from the competitive learning on the x axis in a two dimensional graph. The results can be seen in figure \ref{fig:cl}. The image on the left shows the function obtained with RBF network trained on the $sin(2x)$ dataset without noise and the image on the right shows the function obtained with the RBF network trained on the $sin(2x)$ dataset with noise. On both images the weights obtained from the competitive learning can be seen as the orange dots on the x-axis. The width of the rbf nodes was the number of weights divided by the domain of the function or $2\pi$ in both cases. When we tried this using 6 nodes we obtained a worse results than when we manually placed the weights in the weight space but still the results were pretty good. The absolute relative error for the function with noise was around 0.104 so the network seems to generalize pretty well. 
+
+
+
+
 
 
 \section{Results and discussion - Part II: Self-organising maps \normalsize{\textit{(ca. 2 pages)}}}
@@ -76,18 +106,27 @@ In the code we set the initial neighbors to 50, had 1000 epochs and a learning r
 
 
 \subsection{Cyclic tour}
-Figure \ref{fig:SOM_cycle} represents the shortest cycling tour which passes through all the cities based on their coordinates. 
+Figure \ref{fig:SOM_cycle} represents the shortest cycling tour which passes through all the cities based on their coordinates. We got different paths whenever we ran the code. The dotted lines represent which city is closest to that node as in certain times the nodes were placed between two cities.  
 \begin{figure}[htb]
     \centering
-    \includegraphics[width=7.5cm]{Labs/Lab 2/Results/Cyclic_som.png}
+\includegraphics[width=7.5cm]{Labs/Lab 2/Results/Cyclic_som.png}
     \caption{Best path by SOM network}
     \label{fig:SOM_cycle}
 \end{figure}
 
 \subsection{Clustering with SOM}
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=\textwidth]{Labs/Lab 2/Results/politics_som.png}
+    \caption{SOM grid based on political data}
+    \label{fig:SOM_politics}
+\end{figure}
+In this assignment we were given a dataset on how 349 politicians voted on 31 separate decision and we were given their political party, gender, name and district. The results can be figure \ref{fig:SOM_politics}. In the subfigure at the top left, we to see the names of each 349 politicians and how similar they are to each other. On the figure to the top right, we see how similar each politician voted based on their political party and notice how closely most of them are to each other. The blue, red and green are tend to stick close to each together. Regarding district and gender, there is little there are no observable pattern. 
+
+
+
 
 \section{Final remarks \normalsize{\textit{(max 0.5 page)}}}
-\textit{Please share your final reflections on the lab, its content and your own learning. Which parts of the lab assignment did you find confusing or not necessarily helping in understanding important concepts and which parts you have found interesting and relevant to your learning experience? \\
-Here you can also formulate your opinion, interpretation or speculation about some of the simulation outcomes. Please add any follow-up questions that you might have regarding the lab tasks and the results you have produced.}
+\textbf{I'll write this once you are all done with adding images and so on. Hassan you'll need to fill in for RBF}
 
 \end{document}
