@@ -25,7 +25,7 @@ model.fit_data(X, sin_2x)
 
 predictions = model.predict(test_x)
 
-model2 = DoubleLayerNN(input_nodes=1, nr_of_hidden_nodes=5000, learning_rate=0.00005)
+model2 = DoubleLayerNN(input_nodes=1, nr_of_hidden_nodes=10000, learning_rate=0.00005)
 errors = model2.fit_data(X, sin_2x, iterations=1000)
 predictions2 = model2.predict(test_x)
 
@@ -34,10 +34,10 @@ print ('absolute residual error for model 1: ', str(np.sum(np.abs(predictions2 -
 
 
 plt.scatter(X[0], sin_2x[0], color='red')
-plt.plot(test_x[0], predictions2[0], color='blue', label='Trained with batch learning')
-plt.plot(test_x[0], predictions[0], color='green', label='Trained with sequential learning')
+plt.plot(test_x[0], predictions2[0], color='blue', label='MLP with 10000 hidden nodes')
+plt.plot(test_x[0], predictions[0], color='green', label='RBF network with 7 RBF nodes')
 plt.legend()
-plt.title('The two learning approaches with sigma=pi/4 with random weights')
+plt.title('Comparison of the two models')
 plt.show()
 
 

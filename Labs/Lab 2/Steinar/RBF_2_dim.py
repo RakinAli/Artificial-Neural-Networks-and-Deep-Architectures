@@ -17,6 +17,7 @@ class RBF_network:
                 current_neuron = self.weights_rbf[r]
                 current_sigma = self.sigmas[r]
                 activations[r, n] = np.exp(-(np.linalg.norm(current_neuron - input)**2)/2*current_sigma**2)
+                
 
         return activations
     
@@ -43,6 +44,9 @@ class RBF_network:
             batch = np.array([X[:, i % X.shape[1]]])
             batch_targets = np.array([Y[:, i % X.shape[1]]])
             
+            batch = batch.T
+            batch_targets = batch_targets.T
+
             activations = self.calculate_activations(batch)
 
             #if i % X.shape[1] == 0:
@@ -50,8 +54,8 @@ class RBF_network:
             errors.append(np.sum(error) / X.shape[1])
 
             e =  self.weights_output @ activations  - batch_targets
-
-            delta_w = - activations @ e
+            
+            delta_w = - activations @ e.T
 
             self.weights_output = self.weights_output + lr * delta_w.T
 
