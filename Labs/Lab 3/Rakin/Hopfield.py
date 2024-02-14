@@ -3,15 +3,13 @@ import numpy as np
 from sklearn.base import BaseEstimator
 
 
-def calculate_energy(weights, biases, states):
+def calculate_energy(weights,states):
     # Calculate the first part of the energy equation: -1/2 * sum(w_ij * s_i * s_j)
     energy_interaction = -0.5 * np.dot(states, np.dot(weights, states.T))
 
-    # Calculate the second part of the energy equation: -sum(b_i * s_i)
-    energy_bias = -np.dot(biases, states.T)
 
     # Total energy is the sum of interaction energy and bias energy
-    total_energy = energy_interaction + energy_bias
+    total_energy = energy_interaction 
     return total_energy
 
 
@@ -84,13 +82,7 @@ class Hopfield(BaseEstimator):
 
                 # Calculate and store the energy
                 energy = calculate_energy(
-                    self.weights,
-                    (
-                        self.bias
-                        if self.bias is not None
-                        else np.zeros(prediction.shape[1])
-                    ),
-                    prediction,
+                    self.weights,prediction,
                 )
                 self.energy_per_iteration.append(energy)
 
@@ -100,18 +92,12 @@ class Hopfield(BaseEstimator):
                     # Update the state of one neuron at a time, in a random order
                     net_input = prediction @ self.weights[:, i]
                     if self.bias is not None:  # Check if bias is applied
-                        net_input -= self.bias[i]
-                    prediction[:, i] = _sign(net_input)
+                        net_input -= self.bias  # Apply scalar bias directly without indexing
+                    prediction[:, i] = np.sign(net_input)  # Assuming _sign is equivalent to np.sign
 
                 # Calculate and store the energy
                 energy = calculate_energy(
-                    self.weights,
-                    (
-                        self.bias
-                        if self.bias is not None
-                        else np.zeros(prediction.shape[1])
-                    ),
-                    prediction,
+                    self.weights, prediction,  # Adjust parameters as needed
                 )
                 self.energy_per_iteration.append(energy)
 
