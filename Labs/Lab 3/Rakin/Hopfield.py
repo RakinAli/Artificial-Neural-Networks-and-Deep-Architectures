@@ -5,7 +5,7 @@ from sklearn.base import BaseEstimator
 
 def calculate_energy(weights,states):
     # Calculate the first part of the energy equation: -1/2 * sum(w_ij * s_i * s_j)
-    energy_interaction = -0.5 * np.dot(states, np.dot(weights, states.T))
+    energy_interaction = -np.dot(states, np.dot(weights, states.T))
 
 
     # Total energy is the sum of interaction energy and bias energy
@@ -105,3 +105,7 @@ class Hopfield(BaseEstimator):
             raise ValueError("Invalid prediction method")
 
         return prediction
+
+    def get_energy(self):
+        return self.energy_per_iteration
+    
