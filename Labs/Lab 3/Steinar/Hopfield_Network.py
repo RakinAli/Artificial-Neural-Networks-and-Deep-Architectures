@@ -40,7 +40,7 @@ class Hopfield_Network:
     
     def __recall_asynchronous(self, pattern, limit):
         prev_pattern = np.zeros(self.n_features)
-        curr_pattern = pattern
+        curr_pattern = pattern.copy()
         epoch = 0
 
         while not np.all(prev_pattern == curr_pattern) and epoch < limit:
