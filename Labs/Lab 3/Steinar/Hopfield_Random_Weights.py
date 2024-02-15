@@ -2,25 +2,22 @@ import numpy as np
 
 class Hopfield_Network:
     
-    def __init__(self, n_features, asynchronous=True):
+    def __init__(self, n_features, asynchronous=True, symmetric_weights=False):
         self.n_features = n_features
         self.asynchronous = asynchronous
-        self.weights = np.zeros((n_features, n_features))
+        self.weights = np.random.normal(size=(n_features, n_features))
+        if symmetric_weights:
+            self.weights = 0.5 * self.weights * self.weights.T
+
+        np.fill_diagonal(self.weights, 0)
         self.intermediate_results = []
         self.energy_results = []
 
     
-    def fit_data(self, X):
-        """Fits the data X to the network, X is N x D matrix"""
-        assert X.shape[1] == self.n_features, 'Incorrect number of dimensions'
-        self.weights = 1/X.shape[0] * (X.T @ X)
-        np.fill_diagonal(self.weights, 0)
-
-    
-    def recall(self, pattern, limit=10000, store_intermediate_energies=False):
+    def recall(self, pattern, limit=100):
         """returns converged(bool), pattern"""
         if self.asynchronous:
-            return self.__recall_asynchronous(pattern, limit, store_intermediate_energies)
+            return self.__recall_asynchronous(pattern, limit)
         
         return self.__recall_synchronous(pattern, limit)
         
@@ -54,13 +51,12 @@ class Hopfield_Network:
         return np.all(prev_pattern == curr_pattern), curr_pattern 
 
     
-    def __recall_asynchronous(self, pattern, limit, store_intermediate_energies):
+    def __recall_asynchronous(self, pattern, limit):
         prev_pattern = np.zeros(self.n_features)
         curr_pattern = pattern.copy()
         epoch = 0
         self.intermediate_results.append(curr_pattern)
-        if store_intermediate_energies:
-            self.energy_results = []
+        self.energy_results = []
 
         while not np.all(prev_pattern == curr_pattern) and epoch < limit:
             perm = np.random.permutation(self.n_features)
@@ -68,8 +64,7 @@ class Hopfield_Network:
             i = 0
 
             for p in perm:
-                if store_intermediate_energies:
-                    self.energy_results.append(self.energy(curr_pattern))
+                self.energy_results.append(self.energy(curr_pattern))
                 if i % 100 == 0:
                     self.intermediate_results.append(curr_pattern)
 
