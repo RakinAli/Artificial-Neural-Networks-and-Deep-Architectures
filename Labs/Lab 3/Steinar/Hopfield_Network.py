@@ -15,7 +15,7 @@ class Hopfield_Network:
         np.fill_diagonal(self.weights, 0)
 
     
-    def recall(self, pattern, limit=100):
+    def recall(self, pattern, limit=10000):
         """returns converged(bool), pattern"""
         if self.asynchronous:
             return self.__recall_asynchronous(pattern, limit)
@@ -32,10 +32,25 @@ class Hopfield_Network:
         while not np.all(prev_pattern == curr_pattern) and i < limit:
             prev_pattern = curr_pattern
             curr_pattern = np.sign(self.weights @ curr_pattern)
+            curr_pattern = curr_pattern + (curr_pattern == 0)
             i += 1
 
         return np.all(prev_pattern == curr_pattern), curr_pattern 
 
     
     def __recall_asynchronous(self, pattern, limit):
-        pass
+        prev_pattern = np.zeros(self.n_features)
+        curr_pattern = pattern
+        epoch = 0
+
+        while not np.all(prev_pattern == curr_pattern) and epoch < limit:
+            perm = np.random.permutation(self.n_features)
+            prev_pattern = curr_pattern
+            
+            for p in perm:
+                w = self.weights[p]
+
+                new_x = np.sign(np.dot(w, curr_pattern))
+                curr_pattern[p] = new_x + (new_x == 0) # We do not want zeros
+
+        return np.all(prev_pattern == curr_pattern), curr_pattern
