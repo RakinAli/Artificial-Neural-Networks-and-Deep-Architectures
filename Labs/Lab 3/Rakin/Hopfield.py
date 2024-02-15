@@ -51,22 +51,35 @@ class Hopfield(BaseEstimator):
         self.self_connection = self_connection
 
     def fit(self, X, y=None):
+        # Convert X to a numpy array if it isn't already
         X = np.array(X)
-        features = X.shape[1]
-        weights = (
-            np.random.normal(size=(features, features))
-            if self.random_weights
-            else (X - self.sparsity).T @ (X - self.sparsity)
-        )
 
-        if self.zero_diagonal:
+        # Calculate the average activity (rho)
+        rho = np.mean(X)
+
+        # Number of features (neurons)
+        features = X.shape[1]
+
+        # Initialize weights based on the presence of random weights
+        if self.random_weights:
+            weights = np.random.normal(size=(features, features))
+        else:
+            # Calculate the weights according to the learning rule for sparse patterns
+            # Adjust the patterns by the average activity
+            X_adjusted = X - rho
+            # Apply the outer product to get the weights
+            weights = (X_adjusted.T @ X_adjusted) / X.shape[0]
+
+        # Apply zero diagonal if required
+        if self.zero_diagonal or not self.self_connection:
             np.fill_diagonal(weights, 0)
+
+        # Make weights symmetric if required
         if self.symmetric_weights:
             weights = (weights + weights.T) / 2
-        if not self.self_connection:
-            np.fill_diagonal(weights, 0)
 
-        self.weights = weights / features
+        # Finally, assign the calculated weights to self.weights
+        self.weights = weights
 
     def predict(self, X) -> np.array:
         prediction = X.copy()  # Make a copy to avoid modifying the original input
@@ -78,13 +91,13 @@ class Hopfield(BaseEstimator):
                 net_input = prediction @ self.weights
                 if self.bias is not None:  # Check if bias is applied
                     net_input -= self.bias
-                
+
                 # Incorporate sparsity in the prediction update
                 if self.sparsity > 0.0:
                     prediction = 0.5 + 0.5 * np.sign(net_input)  # Adjusted for sparsity
                 else:
                     prediction = np.sign(net_input)  # Original approach without sparsity
-                
+
                 # Calculate and store the energy
                 energy = calculate_energy(
                     self.weights, prediction,
@@ -98,7 +111,7 @@ class Hopfield(BaseEstimator):
                     net_input = prediction @ self.weights[:, i]
                     if self.bias is not None:  # Check if bias is applied
                         net_input -= self.bias
-                    
+
                     # Incorporate sparsity in the prediction update for each neuron
                     if self.sparsity > 0.0:
                         prediction[:, i] = 0.5 + 0.5 * np.sign(net_input)  # Adjusted for sparsity
@@ -118,4 +131,3 @@ class Hopfield(BaseEstimator):
 
     def get_energy(self):
         return self.energy_per_iteration
-    
