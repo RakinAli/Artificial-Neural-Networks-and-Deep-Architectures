@@ -78,11 +78,16 @@ class Hopfield(BaseEstimator):
                 net_input = prediction @ self.weights
                 if self.bias is not None:  # Check if bias is applied
                     net_input -= self.bias
-                prediction = _sign(net_input)
-
+                
+                # Incorporate sparsity in the prediction update
+                if self.sparsity > 0.0:
+                    prediction = 0.5 + 0.5 * np.sign(net_input)  # Adjusted for sparsity
+                else:
+                    prediction = np.sign(net_input)  # Original approach without sparsity
+                
                 # Calculate and store the energy
                 energy = calculate_energy(
-                    self.weights,prediction,
+                    self.weights, prediction,
                 )
                 self.energy_per_iteration.append(energy)
 
@@ -92,12 +97,17 @@ class Hopfield(BaseEstimator):
                     # Update the state of one neuron at a time, in a random order
                     net_input = prediction @ self.weights[:, i]
                     if self.bias is not None:  # Check if bias is applied
-                        net_input -= self.bias  # Apply scalar bias directly without indexing
-                    prediction[:, i] = np.sign(net_input)  # Assuming _sign is equivalent to np.sign
+                        net_input -= self.bias
+                    
+                    # Incorporate sparsity in the prediction update for each neuron
+                    if self.sparsity > 0.0:
+                        prediction[:, i] = 0.5 + 0.5 * np.sign(net_input)  # Adjusted for sparsity
+                    else:
+                        prediction[:, i] = np.sign(net_input)  # Original approach without sparsity
 
                 # Calculate and store the energy
                 energy = calculate_energy(
-                    self.weights, prediction,  # Adjust parameters as needed
+                    self.weights, prediction,
                 )
                 self.energy_per_iteration.append(energy)
 
