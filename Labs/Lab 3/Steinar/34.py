@@ -10,7 +10,7 @@ with open('../pict.dat') as f:
 
 
 # Fraction of flipped bits
-fraction = 0.8
+fraction = 0.1
 
 first_three = dataset[0:3]
 original_pattern = dataset[0]
@@ -51,3 +51,28 @@ slider = Slider(slider_axis, 'recall', 0.0, len(intermediate_results) - 1, len(i
 slider.on_changed(update)
 
 plt.show()
+
+reconstructions = []
+
+for noise in np.arange(0, 1, 0.1):
+    original_pattern = dataset[0]
+    distorted_pattern = original_pattern.copy()
+    choice = np.random.choice(len(distorted_pattern), int(noise * len(distorted_pattern)), replace=False)
+
+    distorted_pattern[choice] = -distorted_pattern[choice]
+
+    converged, reconstructed_pattern = model.recall(distorted_pattern)
+
+    if np.all(reconstructed_pattern == original_pattern):
+        reconstructions.append(True)
+    else:
+        reconstructions.append(False)
+        print(noise)
+
+
+plt.scatter(np.arange(0, 1, 0.1), reconstructions)
+plt.ylabel('Pattern recovered, 1=True, 0=False')
+plt.xlabel('Noise')
+plt.title('Did the network manage to reconstruct the pattern?')
+plt.show()
+

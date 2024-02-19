@@ -11,4 +11,7 @@ converged, pattern = model.recall(random_pattern)
 energy_results = model.get_energy_results()
 
 plt.plot(energy_results)
+plt.xlabel('Iteration')
+plt.ylabel('Energy')
+plt.title('Hopfield random with symmetric random weights')
 plt.show()

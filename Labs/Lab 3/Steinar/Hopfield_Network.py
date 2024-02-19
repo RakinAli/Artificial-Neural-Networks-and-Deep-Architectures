@@ -41,6 +41,7 @@ class Hopfield_Network:
         prev_pattern = np.zeros(self.n_features)
         curr_pattern = pattern
         i = 0
+        prev_energy = np.inf
 
         self.intermediate_results = []
 
@@ -50,6 +51,13 @@ class Hopfield_Network:
             curr_pattern = np.sign(self.weights @ curr_pattern)
             curr_pattern = curr_pattern + (curr_pattern == 0)
             i += 1
+            energy = self.energy(curr_pattern)
+            self.energy_results.append(energy)
+            
+            if energy == prev_energy:
+                break
+            
+            prev_energy = energy
 
         return np.all(prev_pattern == curr_pattern), curr_pattern 
 
