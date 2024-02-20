@@ -130,8 +130,12 @@ We generated patterns with 10\% activity and investigated how many patterns coul
 The network was able to store up to around 12 patterns when the patterns contained 10\% activity with a value of $\theta$ around 3.9. When the activations of the patterns were 5\% the network was able to store up to around 10 patterns using a value of $\theta$ around 2. 
 
 
-\section{Final remarks \normalsize{\textit{(max 0.5 page)}}}
-\textit{Please share your final reflections on the lab, its content and your own learning. Which parts of the lab assignment did you find confusing or not necessarily helping in understanding important concepts and which parts you have found interesting and relevant to your learning experience? \\
-Here you can also formulate your opinion, interpretation or speculation about some of the simulation outcomes. Please add any follow-up questions that you might have regarding the lab tasks and the results you have produced.}
+\section{Final remarks}
+In this lab we learned that 
+\begin{itemize}
+    \item Hopfield networks are good at solving optimization problem. By encoding a problem as an energy landscape where each state represents a possible solution and the energy corresponds to the objective function, the network can converge to low-energy states which correspond to optimal solutions. This was learned from section 3.3 
+    \item Hopfield networks are used to store patterns and retrieve them based on partial or noisy inputs. They are suitable for tasks such as auto-association and content-addressable memory. This was learned from 
+    \item We learned about Catastrophic forget phenomenon in Hopfield networks. The network, according to the theory covered in the lecture, can recall roughly 138 patterns from 1000 nodes and once that threshold is exceeded, the networks forgets almost everything entirely 
+    \end{itemize}
 
 \end{document}
