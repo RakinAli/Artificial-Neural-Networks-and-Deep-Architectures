@@ -13,10 +13,6 @@ def calculate_energy(weights,states):
     return total_energy
 
 
-def _sign(x):
-    return np.where(x >= 0, 1, -1)
-
-
 class Hopfield(BaseEstimator):
     weights: np.array
     max_iterations: int
