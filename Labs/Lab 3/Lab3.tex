@@ -1,9 +1,11 @@
 \documentclass[a4paper]{article}
 
-\usepackage[swedish]{babel}
+\usepackage{babel}
 \usepackage[latin1]{inputenc}
 \usepackage{amssymb}
 \usepackage{framed}
+\usepackage{graphicx}
+\usepackage{subcaption}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{3ex}
@@ -37,20 +39,96 @@ All code was created with Python v 3.9 and Jupyter notebook. This assignment was
 This section presents the results provides a small discussion which analyzes the results.
 
 \subsection{Convergence and attractors}
-Given x1d, x2d and x3d where x1d has one bit error while x2d and x3d has two bits errors, we discovered that the network converged towards to the stored patterns. When we made the starting pattern even more dissimilar to the stored one where more than half the points were wrong, it did not converge correctly. 
+Given x1d, x2d and x3d where x1d has one bit error while x2d and x3d has two bits errors, we discovered that the network converged towards to the stored patterns. When we made the starting pattern even more dissimilar to the stored one where more than half the points were wrong, it did not converge correctly. A result image has been omitted in order to s
 
 \subsection{Sequential update}
 All three patterns were stable and tested with the network. The network was able to memorise them. \\
 \\Later when the network tried patterns p10 and p11, interesting results were noted. P10 was handled well while P11 did not. P11 seems to be spurious. \\
 
 \subsection{Energy}
+The energy of a Hopfield network at a given with relation to the given activations is defined as the following:
+$$
+E = -\sum_i\sum_j w_{ij}x_ix_j
+$$
+The energy of the network is guaranteed to decrease after each update if the weights between to nodes in the Hopfield network are symmetric. We initialized the weights using the Hebbian learning rule. We used the first three images in the image dataset and let the network memorize them. The energies at the different images are; -490287 for image 1, -465114 for image 2, and -498090.6 for image 3. We used image 11 from the dataset which is a mix of images 2 and 3. The energy of the network when presented with image 11 was around -58197 which is much higher than for the images the network has remembered. We performed recall on this image sequentially and plotted the energy after each iteration. The results from that can be seen in figure \ref{fig:energies}
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Labs/Lab 3/images/energy.png}
+    \caption{Energy of the network}
+    \label{fig:energies}
+\end{figure}
+
+As can be seen in figure \ref{fig:energies} the energy either lowers or stays the same after each iteration. This was expected since as mentioned in the beginning of this section one should expect the energy of the network to get lower if the weights are symmetric. We also tried initializing the weights randomly in two ways. One way was initializing each weight using a normal distribution with mean 0 and variance 1 and the other way we used a normal distribution with mean 0 and variance 1 to initialize the weights but we ensured that the weight matrix was symmetrical. Figure \ref{fig:energies-random-weights} shows the evolution of the energy of the network for each iteration when recalling image 11 from the data set.
+
+\begin{figure}[!htb]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 3/images/energies-asymmetric.png}
+        \caption{Asymmetric weights}
+    \end{subfigure}%
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{Labs/Lab 3/images/energies-symmetric.png}
+        \caption{Symmetric weights}
+        \label{fig:symmetric}
+    \end{subfigure}
+    \caption{The energy of networks with random weights}
+    \label{fig:energies-random-weights}
+\end{figure}
+
+As the figure shows the energy of the network with asymmetric weights does not always lower with each iteration, however, the network with the symmetric random weights does lower the energy with each iteration in the recall. It did not recall one of the pictures in the data set, since the network has not memorized the patterns, but it did end in some spurious pattern.
 
 \subsection{Distortion Resistance}
+We trained a Hopfield network using images 1, 2 and 3 from the data set. We then distorted the patterns by flipping a random part of the bits. We checked with different levels of distortion, the values we checked were on the interval 0\% to 100\% distortion with a step size of 10\%. The plot in figure \ref{fig:distortions} shows whether we managed to recover the figure using the model as a function of the distortion. The model performed pretty well. It managed to recover the image with up to 40\% distortion. After that it did not manage to recover the original pattern. However we noticed that when the percentage of distorted pixels was greater than 50\% it sometimes converged to a pattern that was the original pattern with flipped bits. That is every 1 was flipped to -1 and vice versa. These results can be seen in figure \ref{fig:distortion}. These results are expected since the Hopfield network is symmetric in this way.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 3/images/distortion.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 3/images/inverted_pattern.png}
+    \end{subfigure}
+    \caption{Recovering distorted images}
+    \label{fig:distortion}
+\end{figure}
 
 \subsection{Capacity}
 
-\subsection{Sparse Pattern}
+\subsection{Sparse Patterns}
+In this section of the assignment we investigated sparse patterns and how the learning rule could be adjusted using average activity $\rho=\frac{1}{NP}\sum_\mu \sum_i x_i^\mu$. The learning rule with this average activity is:
+$$
+w_{ij} = \sum_{\mu=1}^P (x_i^\mu - \rho)(x_j^\mu - \rho)
+$$
+
+And when we updated the activations during recall we used the following equation that relies on a bias term, $\theta$:
+
+$$
+x_i \leftarrow 0.5 + 0.5 * sign(\sum_j w_{ij}x_j - \theta)
+$$
+
+We generated patterns with 10\% activity and investigated how many patterns could be stored for different values of the bias term, $\theta$. We checked for values of theta between -3 and 10 and used a step size of 0.1, based on our empirical findings. We made a script that repeated this 100 times and used the average number of patterns stored to get better results. We then plotted the average number of patterns the network was able to store as a function of the theta value. This graph can be seen in figure \ref{fig:stored-patterns-theta}. We also tried this for random patterns with 5\% activity. The results for that can be seen in the graph on the right in figure \ref{fig:stored-patterns-theta}
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 3/images/stored_patterns_theta.png}
+        \caption{Patterns with 10\% activation}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \includegraphics[width=\textwidth]{Labs/Lab 3/images/stored_patterns_theta_005_activity.png}
+        \caption{Patterns with 5\% activation}
+    \end{subfigure}
+    \caption{Number of patterns the network was able to store}
+    \label{fig:stored-patterns-theta}
+\end{figure}
+
+The network was able to store up to around 12 patterns when the patterns contained 10\% activity with a value of $\theta$ around 3.9. When the activations of the patterns were 5\% the network was able to store up to around 10 patterns using a value of $\theta$ around 2. 
+
 
 \section{Final remarks \normalsize{\textit{(max 0.5 page)}}}
 \textit{Please share your final reflections on the lab, its content and your own learning. Which parts of the lab assignment did you find confusing or not necessarily helping in understanding important concepts and which parts you have found interesting and relevant to your learning experience? \\
