@@ -51,10 +51,10 @@ All three patterns were stable and tested with the network. The network was able
 \end{figure}
 \\Later when the network tried patterns p10 and p11, interesting results were noted. P10 was handled well while P11 did not. P11 seems to be spurious. See the figure below\\
 
-\begin{figure}
+\begin{figure}[htb]
     \centering
-    \includegraphics{}
-    \caption{Caption}
+    \includegraphics[width=10cm]{Labs/Lab 3/Rakin/Results/3.2-p11.png}
+    \caption{P3 on the left and P11 recall on the right}
     \label{fig:enter-label}
 \end{figure}
 
@@ -148,7 +148,7 @@ In this lab we learned that
 \begin{itemize}
     \item Hopfield networks are good at solving optimization problem. By encoding a problem as an energy landscape where each state represents a possible solution and the energy corresponds to the objective function, the network can converge to low-energy states which correspond to optimal solutions. This was learned from section 3.3 
     \item Hopfield networks are used to store patterns and retrieve them based on partial or noisy inputs. They are suitable for tasks such as auto-association and content-addressable memory. This was learned from 3.4 and 3.1 
-    \item We learned about Catastrophic forget phenomenon in Hopfield networks. The network, according to the theory covered in the lecture, can recall roughly 138 patterns from 1000 nodes and once that threshold is exceeded, the networks forgets almost everything entirely 
+    \item We learned about Catastrophic forget phenomenon in Hopfield networks. The network, according to the theory covered in the lecture, can recall roughly 138 patterns from 1000 nodes and once that threshold is exceeded, the networks forgets almost everything entirely in an abrupt manner.
     \end{itemize}
 
 \end{document}
