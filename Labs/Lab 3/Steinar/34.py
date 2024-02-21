@@ -10,7 +10,7 @@ with open('../pict.dat') as f:
 
 
 # Fraction of flipped bits
-fraction = 0.1
+fraction = 0.8
 
 first_three = dataset[0:3]
 original_pattern = dataset[0]
@@ -52,6 +52,16 @@ slider.on_changed(update)
 
 plt.show()
 
+fig, axarr = plt.subplots(1, 2)
+fig.suptitle('Comparison of the original pattern and the recovered pattern')
+axarr[0].imshow(original_pattern.reshape(32,32))
+axarr[1].imshow(converged_data.reshape(32,32))
+axarr[0].set_title('The original pattern')
+axarr[1].set_title('The recovered pattern')
+
+plt.show()
+
+
 reconstructions = []
 
 for noise in np.arange(0, 1, 0.1):
@@ -75,4 +85,6 @@ plt.ylabel('Pattern recovered, 1=True, 0=False')
 plt.xlabel('Noise')
 plt.title('Did the network manage to reconstruct the pattern?')
 plt.show()
+
+
 
