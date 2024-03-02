@@ -1,6 +1,7 @@
 from util import *
 from rbm import RestrictedBoltzmannMachine 
 from dbn import DeepBeliefNet
+from tqdm import tqdm
 
 if __name__ == "__main__":
 
@@ -11,16 +12,17 @@ if __name__ == "__main__":
     
     print ("\nStarting a Restricted Boltzmann Machine..")
 
-    rbm = RestrictedBoltzmannMachine(ndim_visible=image_size[0]*image_size[1],
-                                     ndim_hidden=200,
-                                     is_bottom=True,
-                                     image_size=image_size,
-                                     is_top=False,
-                                     n_labels=10,
-                                     batch_size=50
-    )
-    
-    rbm.cd1(visible_trainset=train_imgs, n_iterations=2, plotting=True)
+    for hidden_layers in tqdm(range(200,500,50)):
+        rbm = RestrictedBoltzmannMachine(ndim_visible=image_size[0]*image_size[1],
+                                        ndim_hidden=hidden_layers,
+                                        is_bottom=True,
+                                        image_size=image_size,
+                                        is_top=False,
+                                        n_labels=10,
+                                        batch_size=50
+        )
+        
+        rbm.cd1(visible_trainset=train_imgs, n_iterations=10, plotting=True)
     
     ''' deep- belief net '''
 

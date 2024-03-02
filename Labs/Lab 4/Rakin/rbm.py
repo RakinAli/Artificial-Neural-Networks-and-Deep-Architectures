@@ -1,5 +1,6 @@
 from util import *
 from tqdm import tqdm
+import os
 
 class RestrictedBoltzmannMachine():
     '''
@@ -136,9 +137,32 @@ class RestrictedBoltzmannMachine():
             plt.plot(range(len(error)), error)
             plt.xlabel("Batch")
             plt.ylabel("Error")
-            plt.show()
+
+            # Get current axes and limits
+            ax = plt.gca()
+            y_lim = ax.get_ylim()
+            x_lim = ax.get_xlim()
+
+            # Calculate position for the text
+            text_x = x_lim[1] * 0.7  # 70% across the x-axis
+            text_y = y_lim[1] * 0.9  # 90% up the y-axis
+
+            # Place the text on the plot
+            plt.text(text_x, text_y, f"Hidden layers: {self.ndim_hidden}, Batch size: {self.batch_size}, Iterations: {n_iterations}",
+                    horizontalalignment='right', verticalalignment='top')
+
+            # Save the file as Error_hidden_layers_batch_size_iterations.png
+            figure_name = f"Hidden_layers_{self.ndim_hidden}_batch_{self.batch_size}_iterations_{n_iterations}.png"
+            figure_path = "plots"
+            # Ensure the 'plots' directory exists
+            if not os.path.exists(figure_path):
+                os.makedirs(figure_path)
+
+            # Save the figure in the 'plots' directory
+            plt.savefig(os.path.join(figure_path, figure_name))
 
         return results_list
+
 
     def update_params(self,v_0,h_0,v_k,h_k):
         """Update the weight and bias parameters.
