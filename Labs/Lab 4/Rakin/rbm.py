@@ -122,14 +122,17 @@ class RestrictedBoltzmannMachine():
                             results_list.append(np.array(loss_list).sum() / len(loss_list))  # Append avg loss epoch
                             loss_list = []  # Empty list
 
-            if self.is_bottom:
-                viz_rf(
-                    weights=self.weight_vh[:, self.rf["ids"]].reshape(
-                        (self.image_size[0], self.image_size[1], -1)
-                    ),
-                    it=n_iterations,
-                    grid=self.rf["grid"],
-                )
+                if self.is_bottom:
+                    # Visualize it on the last iteration of the last epoch
+                    if epoch == n_iterations - 1 and it == elements - 1:
+                        iterations = n_iterations * elements # Total iterations
+                        viz_rf(
+                            weights=self.weight_vh[:, self.rf["ids"]].reshape(
+                                (self.image_size[0], self.image_size[1], -1)
+                            ),
+                            it=iterations,
+                            grid=self.rf["grid"],
+                        )
 
             current_epoch += 1  # Update current epoch
 
@@ -162,7 +165,6 @@ class RestrictedBoltzmannMachine():
             plt.savefig(os.path.join(figure_path, figure_name))
 
         return results_list
-
 
     def update_params(self,v_0,h_0,v_k,h_k):
         """Update the weight and bias parameters.
@@ -284,15 +286,9 @@ class RestrictedBoltzmannMachine():
            tuple ( p(h|v) , h) 
            both are shaped (size of mini-batch, size of hidden layer)
         """
+        # 
 
-        assert self.weight_v_to_h is not None
-
-        n_samples = visible_minibatch.shape[0]
-
-        # [TODO TASK 4.2] perform same computation as the function 'get_h_given_v' but with directed connections (replace the zeros below)
-
-        return np.zeros((n_samples,self.ndim_hidden)), np.zeros((n_samples,self.ndim_hidden))
-
+      
     def get_v_given_h_dir(self,hidden_minibatch):
 
         """Compute probabilities p(v|h) and activations v ~ p(v|h)
