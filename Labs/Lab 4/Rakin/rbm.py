@@ -286,10 +286,12 @@ class RestrictedBoltzmannMachine():
            tuple ( p(h|v) , h) 
            both are shaped (size of mini-batch, size of hidden layer)
         """
-        # 
+        #
 
-      
     def get_v_given_h_dir(self,hidden_minibatch):
+        # Maths notation in overleaf:
+        # p(h_j = 1 | \mathbf{v}) = \sigma\left(\sum_{i} v_i W_{ij}^{(v \rightarrow h)} + b_j^h\right)
+
 
         """Compute probabilities p(v|h) and activations v ~ p(v|h)
 
@@ -315,20 +317,22 @@ class RestrictedBoltzmannMachine():
             to get activities. The probabilities as well as activities can then be concatenated back into a normal visible layer.
             """
 
-            # [TODO TASK 4.2] Note that even though this function performs same computation as 'get_v_given_h' but with directed connections,
-            # this case should never be executed : when the RBM is a part of a DBN and is at the top, it will have not have directed connections.
+            # [TODO TASK 4.2] - DONE
             # Appropriate code here is to raise an error (replace pass below)
-
-            pass
-
+            print("Error: This function should not be executed")
+            raise ValueError("This function should not be executed")
+        
         else:
 
             # [TODO TASK 4.2] performs same computaton as the function 'get_v_given_h' but with directed connections (replace the pass and zeros below)
 
-            pass
+            p_v_given_h_dir = sigmoid(hidden_minibatch @ self.weight_h_to_v.T + self.bias_v)
+            sample = sample_binary(p_v_given_h_dir)
 
-        return np.zeros((n_samples,self.ndim_visible)), np.zeros((n_samples,self.ndim_visible))        
 
+
+        return p_v_given_h_dir, sample
+    
     def update_generate_params(self,inps,trgs,preds):
 
         """Update generative weight "weight_h_to_v" and bias "bias_v"
