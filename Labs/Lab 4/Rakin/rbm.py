@@ -274,24 +274,35 @@ class RestrictedBoltzmannMachine():
         self.weight_h_to_v = np.copy( np.transpose(self.weight_vh) )
         self.weight_vh = None
 
-    def get_h_given_v_dir(self,visible_minibatch):
-
+    def get_h_given_v_dir(self, visible_minibatch):
         """Compute probabilities p(h|v) and activations h ~ p(h|v)
 
         Uses directed weight "weight_v_to_h" and bias "bias_h"
-        
-        Args: 
+
+        Args:
            visible_minibatch: shape is (size of mini-batch, size of visible layer)
-        Returns:        
-           tuple ( p(h|v) , h) 
+        Returns:
+           tuple ( p(h|v) , h)
            both are shaped (size of mini-batch, size of hidden layer)
         """
-        #
+
+        assert self.weight_v_to_h is not None
+
+        n_samples = visible_minibatch.shape[0]
+
+        # finished
+        # [TODO TASK 4.2] perform same computation as the function 'get_h_given_v' but with directed connections (
+        #  replace the zeros below)
+        p_h_given_v_dir = sigmoid(
+            np.dot(visible_minibatch, self.weight_v_to_h) + self.bias_h
+        )
+        h = sample_binary(p_h_given_v_dir)
+
+        return p_h_given_v_dir, h
 
     def get_v_given_h_dir(self,hidden_minibatch):
         # Maths notation in overleaf:
         # p(h_j = 1 | \mathbf{v}) = \sigma\left(\sum_{i} v_i W_{ij}^{(v \rightarrow h)} + b_j^h\right)
-
 
         """Compute probabilities p(v|h) and activations v ~ p(v|h)
 
@@ -321,7 +332,7 @@ class RestrictedBoltzmannMachine():
             # Appropriate code here is to raise an error (replace pass below)
             print("Error: This function should not be executed")
             raise ValueError("This function should not be executed")
-        
+
         else:
 
             # [TODO TASK 4.2] performs same computaton as the function 'get_v_given_h' but with directed connections (replace the pass and zeros below)
@@ -329,10 +340,8 @@ class RestrictedBoltzmannMachine():
             p_v_given_h_dir = sigmoid(hidden_minibatch @ self.weight_h_to_v.T + self.bias_v)
             sample = sample_binary(p_v_given_h_dir)
 
-
-
         return p_v_given_h_dir, sample
-    
+
     def update_generate_params(self,inps,trgs,preds):
 
         """Update generative weight "weight_h_to_v" and bias "bias_v"
