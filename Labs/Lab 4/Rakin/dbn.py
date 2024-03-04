@@ -126,6 +126,7 @@ class DeepBeliefNet():
 
         return
 
+
     def train_greedylayerwise(self, vis_trainset, lbl_trainset, n_iterations):
 
         """
