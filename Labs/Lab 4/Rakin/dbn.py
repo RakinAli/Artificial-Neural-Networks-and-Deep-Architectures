@@ -95,7 +95,7 @@ class DeepBeliefNet():
     
 
 
-    def generate(self,true_lbl,name):
+    def generate(self, true_lbl, name):
 
         """Generate data from labels
 
@@ -106,26 +106,43 @@ class DeepBeliefNet():
 
         n_sample = true_lbl.shape[0]
 
-        records = []        
-        fig,ax = plt.subplots(1,1,figsize=(3,3))
+        records = []
+        fig, ax = plt.subplots(1, 1, figsize=(3, 3))
         plt.subplots_adjust(left=0, bottom=0, right=1, top=1, wspace=0, hspace=0)
-        ax.set_xticks([]); ax.set_yticks([])
+        ax.set_xticks([])
+        ax.set_yticks([])
 
         lbl = true_lbl
 
-        # [TODO TASK 4.2] fix the label in the label layer and run alternating Gibbs sampling in the top RBM. From the top RBM, drive the network \
-        # top to the bottom visible layer (replace 'vis' from random to your generated visible layer).
+        # finished
+        # [TODO TASK 4.2] fix the label in the label layer and run alternating Gibbs sampling in the top RBM. From
+        #  the top RBM, drive the network \ top to the bottom visible layer (replace 'vis' from random to your
+        #  generated visible layer).
 
-        for _ in range(self.n_gibbs_gener):
+        random_vis = np.random.choice([0, 1], self.sizes['vis']).reshape(-1, self.sizes['vis'])
+        h_1 = self.rbm_stack["vis--hid"].get_h_given_v_dir(random_vis)[1]
+        h_2 = self.rbm_stack["hid--pen"].get_h_given_v_dir(h_1)[1]
+        h_2_label = np.concatenate((h_2, lbl), axis=1)
 
-            vis = np.random.rand(n_sample,self.sizes["vis"])
+        # from top to bottom
+        for _ in tqdm(range(self.n_gibbs_gener)):
+            top = self.rbm_stack["pen+lbl--top"].get_h_given_v(h_2_label)[1]
+            h_2_label = self.rbm_stack["pen+lbl--top"].get_v_given_h(top)[1]
+            # fix the labels
+            h_2_label[:, -lbl.shape[1]:] = lbl[:, :]
+            h_2_top_to_bot = h_2_label[:, :-lbl.shape[1]]
+            print("h2_top_to_bot shape", h_2_top_to_bot.shape)
+            h_1_top_to_bot = self.rbm_stack["hid--pen"].get_v_given_h_dir(h_2_top_to_bot)[1]
 
-            records.append( [ ax.imshow(vis.reshape(self.image_size), cmap="bwr", vmin=0, vmax=1, animated=True, interpolation=None) ] )
+            print("h1_top_to_bot shape", h_1_top_to_bot.shape)
+            vis = self.rbm_stack["vis--hid"].get_v_given_h_dir(h_1_top_to_bot)[1]
 
-        anim = stitch_video(fig,records).save("%s.generate%d.mp4"%(name,np.argmax(true_lbl)))            
+            records.append([ax.imshow(vis.reshape(self.image_size), cmap="bwr", vmin=0, vmax=1, animated=True,
+                                      interpolation=None)])
 
-        return
-
+        anim = stitch_video(fig, records).save("%s.generate%d.mp4" % (name, np.argmax(true_lbl)))
+        # plot_images(np.array(records), np.arange(0, 10)[int((np.where(true_lbl == 1))[0])] * np.ones(len((records))))
+        return records
 
     def train_greedylayerwise(self, vis_trainset, lbl_trainset, n_iterations):
 
