@@ -57,7 +57,7 @@ class RestrictedBoltzmannMachine():
         
         self.momentum = 0.7
 
-        self.print_period = 5000
+        self.print_period = 300
         
         self.rf = { # receptive-fields. Only applicable when visible layer is input data
             "period" : 5000, # iteration period to visualize
@@ -106,7 +106,7 @@ class RestrictedBoltzmannMachine():
                     v_0 = visible_trainset.copy()
                     prob_h_0, h_0 = self.get_h_given_v(v_0)
                     prob_v_1, v_1 = self.get_v_given_h(h_0)
-                    print ("iteration=%7d recon_loss=%4.4f"%(epoch, np.linalg.norm(visible_trainset - v_1)))
+                    print ("iteration=%7d recon_loss=%4.4f"%(epoch, np.linalg.norm(visible_trainset - prob_v_1)))
 
         return
     
@@ -287,7 +287,7 @@ class RestrictedBoltzmannMachine():
             
         else:
                         
-            probabilities = sigmoid(hidden_minibatch @ self.weight_h_to_v.T + self.bias_v)
+            probabilities = sigmoid(hidden_minibatch @ self.weight_h_to_v + self.bias_v)
             samples = sample_binary(probabilities)
         
         return probabilities, samples

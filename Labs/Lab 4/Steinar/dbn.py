@@ -109,14 +109,33 @@ class DeepBeliefNet():
 
         # [TODO TASK 4.2] fix the label in the label layer and run alternating Gibbs sampling in the top RBM. From the top RBM, drive the network \ 
         # top to the bottom visible layer (replace 'vis' from random to your generated visible layer).
+
+        # Setja visible layer í toppnum sem eitthvað random en muna að setja label hlutann sem label
+        prob_pen_lbl = np.random.normal(loc=0.0, scale=0.01, size=(n_sample, self.rbm_stack['pen+lbl--top'].ndim_visible))
             
         for _ in range(self.n_gibbs_gener):
+            # fara í gegnum alternating gibbs sampling. v -> h -> v
+            prob_pen_lbl[:, -10:] = lbl
+            prob_top, top = self.rbm_stack['pen+lbl--top'].get_h_given_v(prob_pen_lbl)
+            prob_pen_lbl, per_lbl = self.rbm_stack['pen+lbl--top'].get_v_given_h(prob_top)
 
-            vis = np.random.rand(n_sample,self.sizes["vis"])
+            # Sampla niður netið
+
+            prob_pen = prob_pen_lbl[:, :-10]
+            prob_hidden, hidden = self.rbm_stack['hid--pen'].get_v_given_h_dir(prob_pen)
+
+            print(prob_hidden.shape) # n x 500
+
+            print(self.rbm_stack['vis--hid'].ndim_visible)
+            print(self.rbm_stack['vis--hid'].ndim_hidden)
+
+            prob_visible, visible = self.rbm_stack['vis--hid'].get_v_given_h_dir(prob_hidden)
+
+            vis = prob_visible
             
             records.append( [ ax.imshow(vis.reshape(self.image_size), cmap="bwr", vmin=0, vmax=1, animated=True, interpolation=None) ] )
             
-        anim = stitch_video(fig,records).save("%s.generate%d.mp4"%(name,np.argmax(true_lbl)))            
+        anim = stitch_video(fig,records).save("%s.generate%d.gif"%(name,np.argmax(true_lbl)))            
             
         return
 
