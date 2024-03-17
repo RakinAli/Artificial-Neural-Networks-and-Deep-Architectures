@@ -37,11 +37,12 @@ if __name__ == "__main__":
     ''' greedy layer-wise training '''
 
     dbn.train_greedylayerwise(vis_trainset=train_imgs, lbl_trainset=train_lbls, n_iterations=2)
-    """
+    print("Testing on traiing set")
     dbn.recognize(train_imgs, train_lbls)
-
+    print("Testing on test set")
     dbn.recognize(test_imgs, test_lbls)
-"""
+
+    print("Generating images for each digit using the trained model.")
     for digit in range(10):
         digit_1hot = np.zeros(shape=(1,10))
         digit_1hot[0,digit] = 1
