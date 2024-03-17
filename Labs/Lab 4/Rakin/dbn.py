@@ -7,8 +7,7 @@ class DeepBeliefNet():
     ''' 
     For more details : Hinton, Osindero, Teh (2006). A fast learning algorithm for deep belief nets. https://www.cs.toronto.edu/~hinton/absps/fastnc.pdf
 
-    network          : [top] <---> [pen] ---> [hid] ---> [vis] 
-                               `-> [lbl] 
+    network          : [top] <---> [pen] ---> [hid] ---> [vis] --> [lbl] 
     lbl : label
     top : top
     pen : penultimate
