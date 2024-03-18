@@ -166,6 +166,7 @@ class RestrictedBoltzmannMachine():
 
         return results_list
 
+
     def update_params(self,v_0,h_0,v_k,h_k):
         """Update the weight and bias parameters.
 
